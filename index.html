@@ -119,14 +119,15 @@
       height: 72px;
       border-radius: 18px;
       flex-shrink: 0;
-      background: linear-gradient(135deg, #64B5F6 0%, #CE93D8 50%, #80CBC4 100%);
+      /* Remove the old gradient background */
+      background-image: url('icon.png'); /* Put your filename here */
+      background-size: cover;
+      background-position: center;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 10px;
-      letter-spacing: 2px;
-      color: rgba(255,255,255,0.9);
-      font-weight: 400;
+      /* This ensures the image looks crisp */
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
     }
 
     .app-info { flex: 1; }
@@ -281,7 +282,7 @@
     <section class="section" id="apps">
       <div class="section-label">APPS</div>
       <div class="app-card">
-        <div class="app-icon">AURIC</div>
+        <div class="app-icon"></div>
         <div class="app-info">
           <div class="app-name">AURIC</div>
           <div class="app-desc">
