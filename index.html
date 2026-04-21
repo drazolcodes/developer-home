@@ -45,7 +45,7 @@
 
     /* ── NAV ── */
     nav {
-      padding: 28px 48px;
+      padding: 32px 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -62,80 +62,79 @@
     }
     
     .nav-logo {
-      font-size: 11px;
+      font-size: 14px;
       letter-spacing: 6px;
-      font-weight: 300;
-      color: rgba(100,181,246,0.8);
+      font-weight: 400;
+      color: rgba(100,181,246,0.9);
       transition: color 0.4s ease;
     }
     .nav-logo:hover { color: #fff; }
     
-    .nav-links { display: flex; gap: 32px; }
+    .nav-links { display: flex; gap: 36px; }
     .nav-links a {
-      font-size: 11px;
+      font-size: 14px;
       letter-spacing: 2px;
-      color: rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.4);
       text-decoration: none;
-      font-weight: 300;
+      font-weight: 400;
       transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
     }
     .nav-links a:hover { color: #fff; transform: translateY(-2px); }
 
     /* ── HERO ── */
     .hero {
-      padding: 140px 48px 100px;
-      max-width: 900px;
+      padding: 160px 48px 120px;
+      max-width: 1000px;
     }
     .hero-tag {
-      font-size: 11px;
+      font-size: 13px;
       letter-spacing: 5px;
-      color: rgba(100,181,246,0.45);
-      font-weight: 300;
+      color: rgba(100,181,246,0.6);
+      font-weight: 400;
       margin-bottom: 24px;
     }
     
-    /* Subtle Title Floating Animation */
     @keyframes subtleFloat {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-8px); }
     }
     .hero h1 {
-      font-size: clamp(42px, 7vw, 76px);
-      font-weight: 200;
+      font-size: clamp(48px, 8vw, 84px);
+      font-weight: 300;
       line-height: 1.1;
       letter-spacing: -2px;
       color: #fff;
-      margin-bottom: 28px;
+      margin-bottom: 32px;
       animation: subtleFloat 6s ease-in-out infinite;
     }
-    .hero h1 span { color: rgba(100,181,246,0.7); }
+    .hero h1 span { color: rgba(100,181,246,0.8); }
     .hero p {
-      font-size: 16px;
+      font-size: 20px;
       font-weight: 300;
       line-height: 1.8;
-      color: rgba(255,255,255,0.35);
-      max-width: 520px;
+      color: rgba(255,255,255,0.45);
+      max-width: 600px;
     }
 
     /* ── APP CARD ── */
-    .section { padding: 80px 48px; }
+    .section { padding: 100px 48px; }
     .section-label {
-      font-size: 10px;
-      letter-spacing: 5px;
-      color: rgba(255,255,255,0.2);
-      margin-bottom: 40px;
+      font-size: 13px;
+      letter-spacing: 6px;
+      color: rgba(255,255,255,0.3);
+      margin-bottom: 48px;
     }
 
     .app-card {
       display: flex;
-      align-items: center;
-      gap: 32px;
-      padding: 40px;
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 28px;
+      align-items: flex-start;
+      gap: 40px;
+      padding: 48px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 32px;
       background: rgba(255,255,255,0.02);
       backdrop-filter: blur(20px);
-      max-width: 720px;
+      max-width: 850px;
       transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
       transform-style: preserve-3d;
       will-change: transform;
@@ -143,15 +142,16 @@
     .app-card:hover {
       background: rgba(255,255,255,0.04);
       border-color: rgba(100,181,246,0.3);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     }
 
     .app-icon {
-      width: 84px;
-      height: 84px;
-      border-radius: 22px;
+      width: 100px;
+      height: 100px;
+      border-radius: 24px;
       flex-shrink: 0;
       background-image: url('icon.png');
+      background-color: #0B0B0F; /* Fallback color matching Auric */
       background-size: cover;
       background-position: center;
       box-shadow: 0 15px 35px rgba(0,0,0,0.4);
@@ -163,28 +163,27 @@
 
     .app-info { flex: 1; transform: translateZ(10px); }
     .app-name {
-      font-size: 24px;
+      font-size: 32px;
       font-weight: 300;
       letter-spacing: 2px;
       color: #fff;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
-    .app-desc {
-      font-size: 14px;
-      color: rgba(255,255,255,0.35);
-      line-height: 1.6;
-      font-weight: 300;
-      margin-bottom: 20px;
-    }
-
+    
     .app-status {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      font-size: 10px;
+      font-size: 11px;
       letter-spacing: 2px;
-      color: rgba(100,181,246,0.8);
-      margin-bottom: 20px;
+      color: #64B5F6;
+      background: rgba(100,181,246,0.1);
+      padding: 6px 12px;
+      border-radius: 20px;
+      vertical-align: middle;
     }
     @keyframes pulse {
       0% { box-shadow: 0 0 0 0 rgba(100, 181, 246, 0.7); }
@@ -198,71 +197,148 @@
       animation: pulse 2s infinite;
     }
 
+    .app-desc {
+      font-size: 17px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+      font-weight: 300;
+      margin-bottom: 24px;
+    }
+
+    /* ── FEATURE GRID ── */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      font-weight: 300;
+    }
+    .feature-item svg {
+      color: #64B5F6;
+      flex-shrink: 0;
+    }
+
     /* ── DOWNLOAD BUTTON ── */
     .download-btn {
       display: inline-flex;
       align-items: center;
-      padding: 12px 24px;
-      border-radius: 14px;
-      background: rgba(100,181,246,0.1);
-      border: 1px solid rgba(100,181,246,0.2);
+      padding: 16px 32px;
+      border-radius: 16px;
+      background: rgba(100,181,246,0.15);
+      border: 1px solid rgba(100,181,246,0.3);
       color: #64B5F6;
-      font-size: 11px;
+      font-size: 14px;
       letter-spacing: 2px;
+      font-weight: 500;
       text-decoration: none;
       transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
       cursor: pointer;
       user-select: none;
     }
     .download-btn:hover {
-      background: rgba(100,181,246,0.2);
-      border-color: rgba(100,181,246,0.6);
+      background: rgba(100,181,246,0.25);
+      border-color: rgba(100,181,246,0.8);
       transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 20px rgba(100,181,246,0.15);
+      box-shadow: 0 10px 25px rgba(100,181,246,0.2);
       color: #fff;
     }
 
-    /* ── WARNING TOAST ── */
-    #download-warning {
+    /* ── DOWNLOAD MODAL ── */
+    .modal-overlay {
       position: fixed;
-      bottom: -100px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255, 50, 50, 0.1);
-      border: 1px solid rgba(255, 50, 50, 0.3);
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.6);
       backdrop-filter: blur(15px);
-      padding: 16px 24px;
-      border-radius: 16px;
+      z-index: 1000;
       display: flex;
       align-items: center;
-      gap: 12px;
-      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-      z-index: 999;
-      width: max-content;
-      max-width: 90vw;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
     }
-    #download-warning.show { bottom: 40px; }
-    .warning-text { font-size: 12px; color: rgba(255, 255, 255, 0.8); letter-spacing: 1px; }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .modal-content {
+      background: #0B0B0F; /* Auric Dark Theme */
+      border: 1px solid rgba(100,181,246,0.3);
+      padding: 48px;
+      border-radius: 32px;
+      text-align: center;
+      max-width: 400px;
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+    .modal-overlay.active .modal-content {
+      transform: scale(1) translateY(0);
+    }
+    .modal-icon {
+      font-size: 48px;
+      margin-bottom: 24px;
+    }
+    .modal-title {
+      font-size: 24px;
+      font-weight: 400;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .modal-subtitle {
+      font-size: 15px;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 32px;
+      line-height: 1.5;
+    }
+    .progress-container {
+      width: 100%;
+      height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: #64B5F6;
+      box-shadow: 0 0 10px #64B5F6;
+      transition: width 3s linear;
+    }
+    .modal-timer {
+      font-size: 13px;
+      color: #64B5F6;
+      letter-spacing: 2px;
+    }
 
     /* ── TECH STACK ── */
-    .stack-grid { display: flex; flex-wrap: wrap; gap: 12px; max-width: 640px; }
+    .stack-grid { display: flex; flex-wrap: wrap; gap: 16px; max-width: 700px; }
     .stack-item {
-      padding: 10px 22px;
+      padding: 12px 26px;
       border-radius: 30px;
-      border: 1px solid rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.08);
       background: rgba(255,255,255,0.03);
-      font-size: 12px;
+      font-size: 14px;
+      letter-spacing: 1px;
       font-weight: 300;
-      color: rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.5);
       transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
       cursor: default;
     }
     .stack-item:hover {
       color: #fff;
-      border-color: rgba(100,181,246,0.5);
-      background: rgba(100,181,246,0.1);
+      border-color: rgba(100,181,246,0.6);
+      background: rgba(100,181,246,0.15);
       transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 10px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
     }
 
     .divider { height: 1px; background: rgba(255,255,255,0.05); margin: 0 48px; }
@@ -271,19 +347,20 @@
       padding: 60px 48px;
       display: flex;
       justify-content: space-between;
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: rgba(255,255,255,0.15);
+      font-size: 13px;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.2);
     }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      nav { padding: 20px 24px; }
-      .hero { padding: 100px 24px 60px; }
-      .section { padding: 60px 24px; }
-      .app-card { flex-direction: column; align-items: flex-start; gap: 24px; }
+      nav { padding: 24px; }
+      .hero { padding: 120px 24px 80px; }
+      .section { padding: 80px 24px; }
+      .app-card { flex-direction: column; align-items: flex-start; gap: 32px; padding: 32px;}
+      .feature-grid { grid-template-columns: 1fr; }
       .divider { margin: 0 24px; }
-      footer { padding: 40px 24px; }
+      footer { padding: 40px 24px; flex-direction: column; gap: 16px; text-align: center; }
     }
   </style>
 </head>
@@ -291,9 +368,16 @@
 
   <canvas id="bg-canvas"></canvas>
 
-  <div id="download-warning">
-    <span style="color:#ff5252">⚠️</span>
-    <span class="warning-text">Download blocked. Please disable Ad-Blockers or allow popups.</span>
+  <div id="download-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-icon">💜</div>
+      <h3 class="modal-title">Thanks for choosing Auric.</h3>
+      <p class="modal-subtitle">Prepare for a cleaner mind and better focus. Your download will begin shortly.</p>
+      <div class="progress-container">
+        <div id="modal-progress-bar" class="progress-bar"></div>
+      </div>
+      <p class="modal-timer">STARTING IN <span id="countdown">3</span>...</p>
+    </div>
   </div>
 
   <div class="page">
@@ -315,29 +399,56 @@
     <div class="divider reveal"></div>
 
     <section class="section reveal" id="apps">
-      <div class="section-label">RELEASED</div>
+      <div class="section-label">LATEST RELEASE</div>
       <div class="app-card" id="auric-card">
         <div class="app-icon"></div>
         <div class="app-info">
-          <div class="app-name">AURIC</div>
+          
+          <div class="app-name">
+            AURIC 
+            <span class="app-status">
+              <span class="status-dot"></span> LIVE
+            </span>
+          </div>
+          
           <div class="app-desc">
-            Science-backed breathing exercises to calm your mind and body. 
-            Features guided sessions, global leaderboard, and multi-language support.
+            A minimalist approach to mindfulness. Reclaim your focus in a world of noise with clean, science-backed breathing cycles.
           </div>
-          <div class="app-status">
-            <div class="status-dot"></div>
-            RELEASED
+
+          <div class="feature-grid">
+            <div class="feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              6 Science-Backed Exercises
+            </div>
+            <div class="feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              Custom Pro Controls
+            </div>
+            <div class="feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              Seamless & Aesthetic UI
+            </div>
+            <div class="feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              Global Leaderboards
+            </div>
+            <div class="feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              Multi-Language Support
+            </div>
+            <div class="feature-item">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              Offline Mode Ready
+            </div>
           </div>
-          <br>
+          
           <div 
-            id="dl-btn"
             class="download-btn" 
             data-url="https://github.com/drazolcodes/developer-home/releases/latest/download/app-release.apk"
-            onclick="secureDownload(this)"
-            oncontextmenu="return false;" 
+            onclick="triggerModalDownload(this)"
           >
-            <span id="btn-text">DOWNLOAD APK</span>
-            <svg id="btn-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            <span>DOWNLOAD APK</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
           </div>
         </div>
       </div>
@@ -346,14 +457,14 @@
     <div class="divider reveal"></div>
 
     <section class="section reveal" id="stack">
-      <div class="section-label">TECH STACK</div>
+      <div class="section-label">ENGINEERED WITH</div>
       <div class="stack-grid">
         <div class="stack-item">Flutter</div>
         <div class="stack-item">Dart</div>
         <div class="stack-item">Supabase</div>
         <div class="stack-item">PostgreSQL</div>
         <div class="stack-item">Android</div>
-        <div class="stack-item">GitHub</div>
+        <div class="stack-item">GitHub Actions</div>
         <div class="stack-item">RevenueCat</div>
       </div>
     </section>
@@ -362,7 +473,7 @@
 
     <footer class="reveal">
       <div>© 2026 DRAZOLCODES</div>
-      <div>INDIA</div>
+      <div>BUILT IN INDIA</div>
     </footer>
   </div>
 
@@ -373,33 +484,25 @@
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
           entry.target.classList.add('active');
-          // Optional: Stop observing once revealed
-          // scrollObserver.unobserve(entry.target); 
         }
       });
     }, { threshold: 0.15 });
-
     revealElements.forEach((el) => scrollObserver.observe(el));
 
     /* ── 3D DYNAMIC APP CARD TILT ── */
     const appCard = document.getElementById('auric-card');
     appCard.addEventListener('mousemove', (e) => {
-      // Only apply tilt on larger screens to avoid weird mobile touch behavior
       if (window.innerWidth > 768) {
         const rect = appCard.getBoundingClientRect();
-        const x = e.clientX - rect.left; // x position within the element
-        const y = e.clientY - rect.top;  // y position within the element
+        const x = e.clientX - rect.left; 
+        const y = e.clientY - rect.top;  
         const centerX = rect.width / 2;
         const centerY = rect.height / 2;
-        
-        // Calculate rotation (max 4 degrees to keep it subtle)
         const rotateX = ((y - centerY) / centerY) * -4; 
         const rotateY = ((x - centerX) / centerX) * 4;
-        
         appCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
       }
     });
-
     appCard.addEventListener('mouseleave', () => {
       appCard.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
     });
@@ -436,40 +539,53 @@
       requestAnimationFrame(draw);
     }
 
-    /* ── STEALTH DOWNLOAD LOGIC ── */
-    function secureDownload(element) {
-      const url = element.getAttribute('data-url');
-      const btnText = document.getElementById('btn-text');
+    /* ── MODAL DOWNLOAD LOGIC ── */
+    function triggerModalDownload(btnElement) {
+      const url = btnElement.getAttribute('data-url');
+      const modal = document.getElementById('download-modal');
+      const progressBar = document.getElementById('modal-progress-bar');
+      const countdownText = document.getElementById('countdown');
+      const timerLabel = document.querySelector('.modal-timer');
       
-      btnText.innerText = "STARTING...";
-      element.style.opacity = "0.5";
-      element.style.pointerEvents = "none";
+      // Reset Modal State
+      progressBar.style.transition = 'none';
+      progressBar.style.width = '0%';
+      timerLabel.innerHTML = 'STARTING IN <span id="countdown">3</span>...';
+      const newCountdownText = document.getElementById('countdown');
+      
+      // Open Modal
+      modal.classList.add('active');
+      
+      // Force reflow for CSS transition to restart
+      void progressBar.offsetWidth; 
+      
+      // Start Progress Bar Animation
+      progressBar.style.transition = 'width 3s linear';
+      progressBar.style.width = '100%';
 
-      const hiddenA = document.createElement('a');
-      hiddenA.href = url;
-      hiddenA.target = "_blank";
-      hiddenA.download = "Auric.apk";
-      document.body.appendChild(hiddenA);
-      
-      try {
-        hiddenA.click();
-      } catch (err) {
-        showWarning();
-      }
-      
-      setTimeout(() => {
-        document.body.removeChild(hiddenA);
-        btnText.innerText = "DOWNLOAD APK";
-        element.style.opacity = "1";
-        element.style.pointerEvents = "all";
-        showWarning(); // Trigger warning as a fallback check
-      }, 3000);
-    }
+      let timeLeft = 3;
+      const timer = setInterval(() => {
+        timeLeft--;
+        if (timeLeft > 0) {
+          newCountdownText.innerText = timeLeft;
+        } else {
+          clearInterval(timer);
+          timerLabel.innerText = "DOWNLOADING...";
+          
+          // Trigger the actual file download
+          const hiddenA = document.createElement('a');
+          hiddenA.href = url;
+          hiddenA.download = "Auric.apk";
+          document.body.appendChild(hiddenA);
+          hiddenA.click();
+          document.body.removeChild(hiddenA);
 
-    function showWarning() {
-      const warning = document.getElementById('download-warning');
-      warning.classList.add('show');
-      setTimeout(() => warning.classList.remove('show'), 6000);
+          // Close modal gently after a brief pause
+          setTimeout(() => {
+            modal.classList.remove('active');
+          }, 1500);
+        }
+      }, 1000);
     }
 
     window.addEventListener('resize', init);
