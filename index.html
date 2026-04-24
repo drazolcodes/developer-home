@@ -18,7 +18,7 @@
       overflow-x: hidden;
     }
 
-    /* ── ABSTRACT BACKGROUND ── */
+    /* ── THE BREATHING CANVAS ── */
     #bg-canvas {
       position: fixed;
       top: 0;
@@ -26,8 +26,7 @@
       width: 100%;
       height: 100%;
       z-index: -1;
-      filter: blur(100px);
-      opacity: 0.6;
+      /* Removed blur here, handling it directly in canvas for better performance */
     }
 
     .page { position: relative; z-index: 1; }
@@ -65,7 +64,7 @@
       font-size: 14px;
       letter-spacing: 6px;
       font-weight: 400;
-      color: rgba(100,181,246,0.9);
+      color: rgba(255, 179, 0, 0.9); /* Subtle Gold */
       transition: color 0.4s ease;
     }
     .nav-logo:hover { color: #fff; }
@@ -89,7 +88,7 @@
     .hero-tag {
       font-size: 13px;
       letter-spacing: 5px;
-      color: rgba(100,181,246,0.6);
+      color: rgba(255,255,255,0.3);
       font-weight: 400;
       margin-bottom: 24px;
     }
@@ -107,7 +106,11 @@
       margin-bottom: 32px;
       animation: subtleFloat 6s ease-in-out infinite;
     }
-    .hero h1 span { color: rgba(100,181,246,0.8); }
+    .hero h1 span { 
+      background: linear-gradient(90deg, #64B5F6, #BA68C8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
     .hero p {
       font-size: 20px;
       font-weight: 300;
@@ -141,7 +144,7 @@
     }
     .app-card:hover {
       background: rgba(255,255,255,0.04);
-      border-color: rgba(100,181,246,0.3);
+      border-color: rgba(186, 104, 200, 0.3);
       box-shadow: 0 20px 50px rgba(0,0,0,0.5);
     }
 
@@ -151,7 +154,7 @@
       border-radius: 24px;
       flex-shrink: 0;
       background-image: url('icon.png');
-      background-color: #0B0B0F; /* Fallback color matching Auric */
+      background-color: #111116; 
       background-size: cover;
       background-position: center;
       box-shadow: 0 15px 35px rgba(0,0,0,0.4);
@@ -179,21 +182,21 @@
       gap: 8px;
       font-size: 11px;
       letter-spacing: 2px;
-      color: #64B5F6;
-      background: rgba(100,181,246,0.1);
+      color: #BA68C8;
+      background: rgba(186, 104, 200, 0.1);
       padding: 6px 12px;
       border-radius: 20px;
       vertical-align: middle;
     }
     @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(100, 181, 246, 0.7); }
-      70% { box-shadow: 0 0 0 6px rgba(100, 181, 246, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(100, 181, 246, 0); }
+      0% { box-shadow: 0 0 0 0 rgba(186, 104, 200, 0.7); }
+      70% { box-shadow: 0 0 0 6px rgba(186, 104, 200, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(186, 104, 200, 0); }
     }
     .status-dot {
       width: 6px; height: 6px;
       border-radius: 50%;
-      background: #64B5F6;
+      background: #BA68C8;
       animation: pulse 2s infinite;
     }
 
@@ -221,7 +224,7 @@
       font-weight: 300;
     }
     .feature-item svg {
-      color: #64B5F6;
+      color: #BA68C8;
       flex-shrink: 0;
     }
 
@@ -231,9 +234,9 @@
       align-items: center;
       padding: 16px 32px;
       border-radius: 16px;
-      background: rgba(100,181,246,0.15);
-      border: 1px solid rgba(100,181,246,0.3);
-      color: #64B5F6;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff;
       font-size: 14px;
       letter-spacing: 2px;
       font-weight: 500;
@@ -243,19 +246,18 @@
       user-select: none;
     }
     .download-btn:hover {
-      background: rgba(100,181,246,0.25);
-      border-color: rgba(100,181,246,0.8);
+      background: rgba(186, 104, 200, 0.15);
+      border-color: rgba(186, 104, 200, 0.6);
       transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 25px rgba(100,181,246,0.2);
-      color: #fff;
+      box-shadow: 0 10px 25px rgba(186, 104, 200, 0.2);
     }
 
-    /* ── DOWNLOAD MODAL ── */
+    /* ── REDESIGNED MODAL (FROSTED AURORA) ── */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.6);
-      backdrop-filter: blur(15px);
+      background: rgba(2, 2, 8, 0.7);
+      backdrop-filter: blur(25px);
       z-index: 1000;
       display: flex;
       align-items: center;
@@ -268,55 +270,65 @@
       opacity: 1;
       pointer-events: all;
     }
+    
+    @keyframes borderGlow {
+      0% { border-color: rgba(186, 104, 200, 0.2); }
+      50% { border-color: rgba(255, 179, 0, 0.4); }
+      100% { border-color: rgba(186, 104, 200, 0.2); }
+    }
+
     .modal-content {
-      background: #0B0B0F; /* Auric Dark Theme */
-      border: 1px solid rgba(100,181,246,0.3);
-      padding: 48px;
+      background: linear-gradient(145deg, rgba(20, 20, 25, 0.8), rgba(5, 5, 10, 0.9));
+      border: 1px solid rgba(186, 104, 200, 0.2);
+      padding: 56px 48px;
       border-radius: 32px;
       text-align: center;
-      max-width: 400px;
-      transform: scale(0.9) translateY(20px);
+      max-width: 420px;
+      transform: scale(0.95) translateY(20px);
       transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
+      animation: borderGlow 4s infinite ease-in-out;
     }
     .modal-overlay.active .modal-content {
       transform: scale(1) translateY(0);
     }
+    
     .modal-icon {
       font-size: 48px;
       margin-bottom: 24px;
+      filter: drop-shadow(0 0 15px rgba(255, 179, 0, 0.4));
     }
     .modal-title {
-      font-size: 24px;
-      font-weight: 400;
+      font-size: 26px;
+      font-weight: 300;
       color: #fff;
       margin-bottom: 12px;
     }
     .modal-subtitle {
       font-size: 15px;
       color: rgba(255,255,255,0.5);
-      margin-bottom: 32px;
-      line-height: 1.5;
+      margin-bottom: 36px;
+      line-height: 1.6;
     }
     .progress-container {
       width: 100%;
-      height: 6px;
-      background: rgba(255,255,255,0.1);
+      height: 4px;
+      background: rgba(255,255,255,0.05);
       border-radius: 10px;
       overflow: hidden;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
     .progress-bar {
       width: 0%;
       height: 100%;
-      background: #64B5F6;
-      box-shadow: 0 0 10px #64B5F6;
-      transition: width 5s linear;
+      background: linear-gradient(90deg, #BA68C8, #FFB300);
+      box-shadow: 0 0 15px rgba(255, 179, 0, 0.5);
+      transition: width 3s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother fill */
     }
     .modal-timer {
-      font-size: 13px;
-      color: #64B5F6;
-      letter-spacing: 2px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 3px;
     }
 
     /* ── TECH STACK ── */
@@ -335,10 +347,9 @@
     }
     .stack-item:hover {
       color: #fff;
-      border-color: rgba(100,181,246,0.6);
-      background: rgba(100,181,246,0.15);
+      border-color: rgba(186, 104, 200, 0.4);
+      background: rgba(186, 104, 200, 0.1);
       transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
     }
 
     .divider { height: 1px; background: rgba(255,255,255,0.05); margin: 0 48px; }
@@ -370,13 +381,13 @@
 
   <div id="download-modal" class="modal-overlay">
     <div class="modal-content">
-      <div class="modal-icon">💜</div>
-      <h3 class="modal-title">Thanks for choosing Auric.</h3>
+      <div class="modal-icon">✨</div>
+      <h3 class="modal-title">Take a deep breath.</h3>
       <p class="modal-subtitle">Prepare for a cleaner mind and better focus. Your download will begin shortly.</p>
       <div class="progress-container">
         <div id="modal-progress-bar" class="progress-bar"></div>
       </div>
-      <p class="modal-timer">STARTING IN <span id="countdown">5</span>...</p>
+      <p class="modal-timer">STARTING IN <span id="countdown">3</span>...</p>
     </div>
   </div>
 
@@ -507,35 +518,50 @@
       appCard.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
     });
 
-    /* ── BACKGROUND ANIMATION ── */
+    /* ── NEW BACKGROUND ANIMATION: THE BREATHING AURA ── */
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
-    let w, h, particles = [];
+    let w, h, time = 0;
 
     function init() {
-      w = canvas.width = window.innerWidth / 2;
-      h = canvas.height = window.innerHeight / 2;
-      particles = [
-        { x: w*0.2, y: h*0.2, r: w*0.4, color: '#1565C0', vx: 0.2, vy: 0.1 },
-        { x: w*0.8, y: h*0.7, r: w*0.5, color: '#4A148C', vx: -0.15, vy: -0.1 },
-        { x: w*0.5, y: h*0.5, r: w*0.3, color: '#004D40', vx: 0.1, vy: -0.15 }
-      ];
+      // Create a slightly oversized canvas so auras bleed off the edges smoothly
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
     }
 
     function draw() {
+      time += 0.005; // Very slow time progression for a calm feel
       ctx.clearRect(0, 0, w, h);
-      particles.forEach(p => {
+      
+      // Three massive, soft gradients representing the app's aesthetic
+      const auras = [
+        { x: w * 0.2, y: h * 0.3, baseR: w * 0.5, color: 'rgba(106, 27, 154, 0.15)', phase: 0 },   // Deep Amethyst
+        { x: w * 0.8, y: h * 0.7, baseR: w * 0.45, color: 'rgba(255, 179, 0, 0.12)', phase: 2.5 }, // Auric Gold
+        { x: w * 0.5, y: h * 0.6, baseR: w * 0.55, color: 'rgba(21, 101, 192, 0.1)', phase: 5 }    // Calm Ocean Blue
+      ];
+
+      auras.forEach(aura => {
+        // Sine wave scaling to simulate deep, slow breathing
+        const breath = Math.sin(time + aura.phase) * (w * 0.1); 
+        const radius = Math.max(10, aura.baseR + breath);
+
+        // Gentle floating movement
+        const driftX = Math.cos(time * 0.8 + aura.phase) * (w * 0.05);
+        const driftY = Math.sin(time * 0.8 + aura.phase) * (h * 0.05);
+
         ctx.beginPath();
-        let grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
-        grad.addColorStop(0, p.color);
-        grad.addColorStop(1, 'transparent');
+        let grad = ctx.createRadialGradient(
+          aura.x + driftX, aura.y + driftY, 0, 
+          aura.x + driftX, aura.y + driftY, radius
+        );
+        grad.addColorStop(0, aura.color);
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        
         ctx.fillStyle = grad;
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.arc(aura.x + driftX, aura.y + driftY, radius, 0, Math.PI * 2);
         ctx.fill();
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > w) p.vx *= -1;
-        if (p.y < 0 || p.y > h) p.vy *= -1;
       });
+
       requestAnimationFrame(draw);
     }
 
@@ -547,20 +573,16 @@
       const countdownText = document.getElementById('countdown');
       const timerLabel = document.querySelector('.modal-timer');
       
-      // Reset Modal State
       progressBar.style.transition = 'none';
       progressBar.style.width = '0%';
       timerLabel.innerHTML = 'STARTING IN <span id="countdown">3</span>...';
       const newCountdownText = document.getElementById('countdown');
       
-      // Open Modal
       modal.classList.add('active');
-      
-      // Force reflow for CSS transition to restart
       void progressBar.offsetWidth; 
       
-      // Start Progress Bar Animation
-      progressBar.style.transition = 'width 3s linear';
+      // 3 second cubic-bezier fill for a smoother, premium feel
+      progressBar.style.transition = 'width 3s cubic-bezier(0.4, 0, 0.2, 1)';
       progressBar.style.width = '100%';
 
       let timeLeft = 3;
@@ -572,7 +594,6 @@
           clearInterval(timer);
           timerLabel.innerText = "DOWNLOADING...";
           
-          // Trigger the actual file download
           const hiddenA = document.createElement('a');
           hiddenA.href = url;
           hiddenA.download = "Auric.apk";
@@ -580,7 +601,6 @@
           hiddenA.click();
           document.body.removeChild(hiddenA);
 
-          // Close modal gently after a brief pause
           setTimeout(() => {
             modal.classList.remove('active');
           }, 1500);
