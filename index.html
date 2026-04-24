@@ -7,7 +7,7 @@
   <meta name="description" content="Independent mobile app developer building mindfulness and wellness apps." />
   <link rel="icon" type="image/png" href="icon.png">
   
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   
   <style>
     /* ── RESET & BASE ── */
@@ -294,57 +294,75 @@
   </div>
 
   <script>
-    /* ── SUPABASE CONFIGURATION ── */
-    const supabaseUrl = 'https://unzjjmesuyrlgauyjvai.supabase.co';
-    const supabaseKey = 'sb_publishable_Q695Fwg_vWyjxVs5H4i9Qg_dV8bbZiO';
-    const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+    /* ── 1. FAILSAFE CRITICAL UI ANIMATIONS FIRST ── */
+    // Scroll Reveals
+    const revealElements = document.querySelectorAll('.reveal');
+    const scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('active');
+      });
+    }, { threshold: 0.15 });
+    revealElements.forEach((el) => scrollObserver.observe(el));
 
-    /* ── FETCH LIVE LEADERBOARD ── */
-    async function loadLiveLeaderboard() {
-      const container = document.getElementById('lb-rows-container');
-      
-      try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('username, total_minutes')
-          .order('total_minutes', { ascending: false })
-          .limit(5);
+    // Background Canvas Aura
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, time = 0;
 
-        if (error) throw error;
-
-        container.innerHTML = ''; // Clear loading text
-
-        if (!data || data.length === 0) {
-          container.innerHTML = '<div class="lb-loading">No sessions logged yet. Be the first!</div>';
-          return;
-        }
-
-        data.forEach((user, index) => {
-          const rank = (index + 1).toString().padStart(2, '0');
-          const name = user.username || 'Breather';
-          const score = user.total_minutes || 0;
-
-          const rowHtml = `
-            <div class="lb-row">
-              <div class="lb-rank">${rank}</div>
-              <div class="lb-user">${name}</div>
-              <div class="lb-score">${score} min</div>
-            </div>
-          `;
-          container.innerHTML += rowHtml;
-        });
-
-      } catch (err) {
-        console.error('Leaderboard Fetch Error:', err);
-        container.innerHTML = '<div class="lb-loading" style="color: rgba(255, 82, 82, 0.8);">Unable to sync live data.</div>';
-      }
+    function initCanvas() {
+      w = canvas.width = window.innerWidth;
+      h = canvas.height = window.innerHeight;
     }
-    
-    // Call the function when the page loads
-    loadLiveLeaderboard();
 
+    function drawCanvas() {
+      time += 0.005; 
+      ctx.clearRect(0, 0, w, h);
+      
+      const auras = [
+        { x: w * 0.2, y: h * 0.3, baseR: w * 0.5, color: 'rgba(106, 27, 154, 0.15)', phase: 0 },   
+        { x: w * 0.8, y: h * 0.7, baseR: w * 0.45, color: 'rgba(255, 179, 0, 0.12)', phase: 2.5 }, 
+        { x: w * 0.5, y: h * 0.6, baseR: w * 0.55, color: 'rgba(21, 101, 192, 0.1)', phase: 5 }    
+      ];
 
-    /* ── DYNAMIC GREETING LOGIC ── */
+      auras.forEach(aura => {
+        const breath = Math.sin(time + aura.phase) * (w * 0.1); 
+        const radius = Math.max(10, aura.baseR + breath);
+        const driftX = Math.cos(time * 0.8 + aura.phase) * (w * 0.05);
+        const driftY = Math.sin(time * 0.8 + aura.phase) * (h * 0.05);
+
+        ctx.beginPath();
+        let grad = ctx.createRadialGradient(aura.x + driftX, aura.y + driftY, 0, aura.x + driftX, aura.y + driftY, radius);
+        grad.addColorStop(0, aura.color);
+        grad.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = grad;
+        ctx.arc(aura.x + driftX, aura.y + driftY, radius, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      requestAnimationFrame(drawCanvas);
+    }
+    window.addEventListener('resize', initCanvas);
+    initCanvas();
+    drawCanvas();
+
+    // 3D Card Tilt
+    const appCard = document.getElementById('auric-card');
+    appCard.addEventListener('mousemove', (e) => {
+      if (window.innerWidth > 768) {
+        const rect = appCard.getBoundingClientRect();
+        const x = e.clientX - rect.left; 
+        const y = e.clientY - rect.top;  
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -4; 
+        const rotateY = ((x - centerX) / centerX) * 4;
+        appCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+      }
+    });
+    appCard.addEventListener('mouseleave', () => {
+      appCard.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
+    });
+
+    // Dynamic Greeting
     function setDynamicGreeting() {
       const hour = new Date().getHours();
       let greeting = "Good evening";
@@ -354,7 +372,7 @@
     }
     setDynamicGreeting();
 
-    /* ── INLINE BREATHING PREVIEW LOGIC ── */
+    // Inline Breathing Preview
     const previewBtn = document.getElementById('preview-btn');
     const inlinePreviewWrapper = document.getElementById('inline-preview-wrapper');
     const previewCircle = document.getElementById('preview-circle');
@@ -392,71 +410,7 @@
       runCycle();
     });
 
-    /* ── SCROLL REVEAL LOGIC ── */
-    const revealElements = document.querySelectorAll('.reveal');
-    const scrollObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add('active');
-      });
-    }, { threshold: 0.15 });
-    revealElements.forEach((el) => scrollObserver.observe(el));
-
-    /* ── 3D DYNAMIC APP CARD TILT ── */
-    const appCard = document.getElementById('auric-card');
-    appCard.addEventListener('mousemove', (e) => {
-      if (window.innerWidth > 768) {
-        const rect = appCard.getBoundingClientRect();
-        const x = e.clientX - rect.left; 
-        const y = e.clientY - rect.top;  
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -4; 
-        const rotateY = ((x - centerX) / centerX) * 4;
-        appCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-      }
-    });
-    appCard.addEventListener('mouseleave', () => {
-      appCard.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
-    });
-
-    /* ── NEW BACKGROUND ANIMATION: THE BREATHING AURA ── */
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let w, h, time = 0;
-
-    function init() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
-
-    function draw() {
-      time += 0.005; 
-      ctx.clearRect(0, 0, w, h);
-      
-      const auras = [
-        { x: w * 0.2, y: h * 0.3, baseR: w * 0.5, color: 'rgba(106, 27, 154, 0.15)', phase: 0 },   
-        { x: w * 0.8, y: h * 0.7, baseR: w * 0.45, color: 'rgba(255, 179, 0, 0.12)', phase: 2.5 }, 
-        { x: w * 0.5, y: h * 0.6, baseR: w * 0.55, color: 'rgba(21, 101, 192, 0.1)', phase: 5 }    
-      ];
-
-      auras.forEach(aura => {
-        const breath = Math.sin(time + aura.phase) * (w * 0.1); 
-        const radius = Math.max(10, aura.baseR + breath);
-        const driftX = Math.cos(time * 0.8 + aura.phase) * (w * 0.05);
-        const driftY = Math.sin(time * 0.8 + aura.phase) * (h * 0.05);
-
-        ctx.beginPath();
-        let grad = ctx.createRadialGradient(aura.x + driftX, aura.y + driftY, 0, aura.x + driftX, aura.y + driftY, radius);
-        grad.addColorStop(0, aura.color);
-        grad.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = grad;
-        ctx.arc(aura.x + driftX, aura.y + driftY, radius, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      requestAnimationFrame(draw);
-    }
-
-    /* ── MODAL DOWNLOAD LOGIC ── */
+    // Modal Download
     function triggerModalDownload(btnElement) {
       const url = btnElement.getAttribute('data-url');
       const modal = document.getElementById('download-modal');
@@ -496,9 +450,56 @@
       }, 1000);
     }
 
-    window.addEventListener('resize', init);
-    init();
-    draw();
+    /* ── 2. SUPABASE LOGIC WRAPPED SAFELY ── */
+    async function loadLiveLeaderboard() {
+      const container = document.getElementById('lb-rows-container');
+      try {
+        // If the CDN failed to load (e.g. adblocker), this safely catches the error
+        if (!window.supabase) throw new Error("Supabase library not loaded.");
+
+        const supabaseUrl = 'https://unzjjmesuyrlgauyjvai.supabase.co';
+        const supabaseKey = 'sb_publishable_Q695Fwg_vWyjxVs5H4i9Qg_dV8bbZiO';
+        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+        const { data, error } = await supabaseClient
+          .from('profiles')
+          .select('username, total_minutes')
+          .order('total_minutes', { ascending: false })
+          .limit(5);
+
+        if (error) throw error;
+
+        container.innerHTML = ''; 
+
+        if (!data || data.length === 0) {
+          container.innerHTML = '<div class="lb-loading">No sessions logged yet. Be the first!</div>';
+          return;
+        }
+
+        data.forEach((user, index) => {
+          const rank = (index + 1).toString().padStart(2, '0');
+          const name = user.username || 'Breather';
+          const score = user.total_minutes || 0;
+
+          const rowHtml = `
+            <div class="lb-row">
+              <div class="lb-rank">${rank}</div>
+              <div class="lb-user">${name}</div>
+              <div class="lb-score">${score} min</div>
+            </div>
+          `;
+          container.innerHTML += rowHtml;
+        });
+
+      } catch (err) {
+        console.warn('Leaderboard safely bypassed:', err);
+        container.innerHTML = '<div class="lb-loading" style="color: rgba(255, 255, 255, 0.3);">Leaderboard currently syncing...</div>';
+      }
+    }
+    
+    // Attempt to load the leaderboard
+    loadLiveLeaderboard();
+
   </script>
 </body>
 </html>
