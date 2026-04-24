@@ -6,171 +6,135 @@
   <title>drazolcodes — Mobile Developer</title>
   <meta name="description" content="Independent mobile app developer building mindfulness and wellness apps." />
   <link rel="icon" type="image/png" href="icon.png">
-  
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-  
   <style>
     /* ── RESET & BASE ── */
     * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
     body { background: #020208; color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; overflow-x: hidden; }
-
-    /* ── BACKGROUND CANVAS ── */
     #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
     .page { position: relative; z-index: 1; }
 
-    /* ── SCROLL REVEAL ANIMATIONS ── */
+    /* ── ANIMATIONS ── */
     .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
     .reveal.active { opacity: 1; transform: translateY(0); }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* ── NAV ── */
-    nav { padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.03); animation: fadeInDown 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
-    .nav-logo { font-size: 14px; letter-spacing: 6px; font-weight: 400; color: rgba(255, 179, 0, 0.9); transition: color 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes subtleFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+    @keyframes iconFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(186, 104, 200, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(186, 104, 200, 0); } 100% { box-shadow: 0 0 0 0 rgba(186, 104, 200, 0); } }
+    @keyframes floatReview { 0% { transform: translateY(8px) rotate(0deg); } 100% { transform: translateY(-8px) rotate(1.5deg); } }
+
+    /* ── NAV & HERO ── */
+    nav { padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.03); animation: fadeInDown 1s forwards; }
+    .nav-logo { font-size: 14px; letter-spacing: 6px; color: rgba(255, 179, 0, 0.9); transition: 0.4s; }
     .nav-logo:hover { color: #fff; }
     .nav-links { display: flex; gap: 36px; }
-    .nav-links a { font-size: 14px; letter-spacing: 2px; color: rgba(255,255,255,0.4); text-decoration: none; font-weight: 400; transition: all 0.4s ease; }
+    .nav-links a { font-size: 14px; letter-spacing: 2px; color: rgba(255,255,255,0.4); text-decoration: none; transition: 0.4s; cursor: pointer;}
     .nav-links a:hover { color: #fff; transform: translateY(-2px); }
-
-    /* ── HERO ── */
-    .hero { padding: 140px 48px 100px; max-width: 1000px; }
-    .hero-tag { font-size: 13px; letter-spacing: 5px; color: rgba(255,255,255,0.4); font-weight: 400; margin-bottom: 24px; text-transform: uppercase; }
-    @keyframes subtleFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
-    .hero h1 { font-size: clamp(48px, 8vw, 84px); font-weight: 300; line-height: 1.1; letter-spacing: -2px; color: #fff; margin-bottom: 32px; animation: subtleFloat 6s ease-in-out infinite; }
+    .hero { padding: 140px 48px 100px; max-width: 1000px; margin: 0 auto; text-align: center; display: flex; flex-direction: column; align-items: center;}
+    .hero-tag { font-size: 13px; letter-spacing: 5px; color: rgba(255,255,255,0.4); margin-bottom: 24px; text-transform: uppercase; }
+    .hero h1 { font-size: clamp(48px, 8vw, 84px); font-weight: 300; line-height: 1.1; letter-spacing: -2px; margin-bottom: 32px; animation: subtleFloat 6s infinite; }
     .hero h1 span { background: linear-gradient(90deg, #64B5F6, #BA68C8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero p { font-size: 20px; font-weight: 300; line-height: 1.8; color: rgba(255,255,255,0.45); max-width: 600px; }
+    .hero p { font-size: 20px; font-weight: 300; line-height: 1.8; color: rgba(255,255,255,0.45); max-width: 600px; margin-bottom: 48px;}
 
-    /* ── APP CARD SHOWCASE (WITH REVIEWS) ── */
-    .section { padding: 100px 48px; }
+    /* Assessment Trigger Button */
+    .assessment-trigger-btn { display: inline-flex; align-items: center; gap: 12px; padding: 18px 40px; border-radius: 30px; background: rgba(186, 104, 200, 0.1); border: 1px solid rgba(186, 104, 200, 0.4); color: #BA68C8; font-size: 13px; letter-spacing: 3px; cursor: pointer; transition: 0.4s; box-shadow: 0 0 20px rgba(186, 104, 200, 0.1); }
+    .assessment-trigger-btn:hover { background: rgba(186, 104, 200, 0.2); border-color: rgba(186, 104, 200, 0.8); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(186, 104, 200, 0.25); color: #fff; }
+
+    /* ── APP CARD & REVIEWS ── */
+    .section { padding: 80px 48px; }
     .section-label { font-size: 13px; letter-spacing: 6px; color: rgba(255,255,255,0.3); margin-bottom: 48px; }
-
-    .app-showcase-wrapper { display: flex; align-items: center; gap: 40px; max-width: 1200px; }
-    
-    .app-card { flex: 1.5; display: flex; align-items: flex-start; gap: 40px; padding: 48px; border: 1px solid rgba(255,255,255,0.08); border-radius: 32px; background: rgba(255,255,255,0.02); backdrop-filter: blur(20px); transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease; transform-style: preserve-3d; will-change: transform; }
+    .app-showcase-wrapper { display: flex; align-items: center; gap: 40px; max-width: 1200px; margin: 0 auto; }
+    .app-card { flex: 1.5; display: flex; gap: 40px; padding: 48px; border: 1px solid rgba(255,255,255,0.08); border-radius: 32px; background: rgba(255,255,255,0.02); backdrop-filter: blur(20px); transition: 0.6s; transform-style: preserve-3d; }
     .app-card:hover { background: rgba(255,255,255,0.04); border-color: rgba(186, 104, 200, 0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-    
-    @keyframes iconFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
-    .app-icon { width: 100px; height: 100px; border-radius: 24px; flex-shrink: 0; background-image: url('icon.png'); background-color: #111116; background-size: cover; background-position: center; box-shadow: 0 15px 35px rgba(0,0,0,0.4); transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); animation: iconFloat 4s ease-in-out infinite; }
+    .app-icon { width: 100px; height: 100px; border-radius: 24px; flex-shrink: 0; background: #111116 url('icon.png') center/cover; box-shadow: 0 15px 35px rgba(0,0,0,0.4); transition: 0.6s; animation: iconFloat 4s infinite; }
     .app-card:hover .app-icon { animation: none; transform: translateZ(20px) scale(1.05); }
-    
-    .app-info { flex: 1; transform: translateZ(10px); width: 100%; }
-    .app-name { font-size: 32px; font-weight: 300; letter-spacing: 2px; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 16px; }
-    .app-status { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 2px; color: #BA68C8; background: rgba(186, 104, 200, 0.1); padding: 6px 12px; border-radius: 20px; }
-    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(186, 104, 200, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(186, 104, 200, 0); } 100% { box-shadow: 0 0 0 0 rgba(186, 104, 200, 0); } }
+    .app-info { flex: 1; transform: translateZ(10px); }
+    .app-name { font-size: 32px; font-weight: 300; letter-spacing: 2px; margin-bottom: 12px; display: flex; align-items: center; gap: 16px; }
+    .app-status { display: flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 2px; color: #BA68C8; background: rgba(186, 104, 200, 0.1); padding: 6px 12px; border-radius: 20px; }
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #BA68C8; animation: pulse 2s infinite; }
     .app-desc { font-size: 17px; color: rgba(255,255,255,0.5); line-height: 1.6; font-weight: 300; margin-bottom: 24px; }
     .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
     .feature-item { display: flex; align-items: center; gap: 12px; font-size: 14px; color: rgba(255,255,255,0.7); font-weight: 300; }
-    .feature-item svg { color: #BA68C8; flex-shrink: 0; }
-
-    /* Action Buttons */
+    .feature-item svg { color: #BA68C8; }
+    
     .action-buttons { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
-    .download-btn { display: inline-flex; align-items: center; padding: 16px 32px; border-radius: 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 14px; letter-spacing: 2px; font-weight: 500; text-decoration: none; transition: all 0.4s ease; cursor: pointer; user-select: none; }
-    .download-btn:hover { background: rgba(186, 104, 200, 0.15); border-color: rgba(186, 104, 200, 0.6); transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 25px rgba(186, 104, 200, 0.2); }
-    .preview-btn { display: inline-flex; align-items: center; padding: 16px 32px; border-radius: 16px; background: transparent; border: 1px solid rgba(186, 104, 200, 0.4); color: #BA68C8; font-size: 14px; letter-spacing: 2px; font-weight: 500; cursor: pointer; transition: all 0.4s ease; }
-    .preview-btn:hover { background: rgba(186, 104, 200, 0.1); color: #fff; transform: translateY(-3px); }
-    
-    /* Inline Preview */
-    .inline-preview-wrapper { display: none; flex-direction: column; align-items: center; width: 100%; margin-top: 32px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05); }
-    .inline-preview-wrapper.active { display: flex; animation: fadeIn 0.5s ease forwards; }
-    .breath-circle-container { position: relative; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-    .breath-circle { width: 80px; height: 80px; border-radius: 50%; background: rgba(186, 104, 200, 0.15); border: 1px solid rgba(186, 104, 200, 0.4); box-shadow: 0 0 30px rgba(186, 104, 200, 0.2); transition: all 5s ease-in-out; }
-    .breath-circle.inhale { width: 200px; height: 200px; background: rgba(186, 104, 200, 0.3); box-shadow: 0 0 60px rgba(186, 104, 200, 0.4); }
-    .breath-timer-text { position: absolute; font-size: 12px; letter-spacing: 4px; color: rgba(255,255,255,0.8); font-weight: 400; }
+    .download-btn { display: flex; align-items: center; padding: 16px 32px; border-radius: 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(186, 104, 200, 0.4); color: #fff; font-size: 14px; letter-spacing: 2px; text-decoration: none; transition: 0.4s; cursor: pointer; }
+    .download-btn:hover { background: rgba(186, 104, 200, 0.15); border-color: rgba(186, 104, 200, 0.8); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(186, 104, 200, 0.2); }
 
-    /* ── FLOATING REVIEWS COLUMN ── */
+    /* Reviews Column */
     .reviews-column { flex: 0.8; display: flex; flex-direction: column; gap: 20px; }
-    .review-bubble {
-      background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
-      border: 1px solid rgba(186, 104, 200, 0.2);
-      border-radius: 20px;
-      padding: 24px;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      animation: floatReview 6s ease-in-out infinite alternate;
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    .review-bubble.active { opacity: 1; transform: translateY(0); transition: opacity 0.8s ease; }
-    
-    @keyframes floatReview { 0% { transform: translateY(8px) rotate(0deg); } 100% { transform: translateY(-8px) rotate(1.5deg); } }
-    
+    .review-bubble { background: linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border: 1px solid rgba(186, 104, 200, 0.2); border-radius: 20px; padding: 24px; backdrop-filter: blur(12px); animation: floatReview 6s alternate infinite; opacity: 0; transform: translateY(20px); }
+    .review-bubble.active { opacity: 1; transform: translateY(0); transition: opacity 0.8s; }
     .review-stars { color: #FFB300; font-size: 12px; margin-bottom: 10px; letter-spacing: 2px; }
     .review-text { font-size: 14px; font-weight: 300; color: rgba(255,255,255,0.85); line-height: 1.6; margin-bottom: 12px; font-style: italic; }
-    .review-user { font-size: 12px; color: #BA68C8; letter-spacing: 1px; font-weight: 400; }
+    .review-user { font-size: 12px; color: #BA68C8; letter-spacing: 1px; }
 
-    /* ── LIVE LEADERBOARD WITH TABS ── */
-    .leaderboard-wrapper { max-width: 600px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 32px; backdrop-filter: blur(10px); }
+    /* ── QUIZ MODAL OVERLAY ── */
+    .quiz-modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 2, 8, 0.8); backdrop-filter: blur(15px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
+    .quiz-modal-overlay.active { opacity: 1; pointer-events: all; }
+    .quiz-wrapper { width: 100%; max-width: 700px; background: rgba(20, 20, 25, 0.9); border: 1px solid rgba(186, 104, 200, 0.2); border-radius: 32px; padding: 56px 48px; box-shadow: 0 30px 60px rgba(0,0,0,0.8); position: relative; overflow: hidden; min-height: 400px; display: flex; flex-direction: column; justify-content: center; transform: scale(0.95) translateY(20px); transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
+    .quiz-modal-overlay.active .quiz-wrapper { transform: scale(1) translateY(0); }
+    
+    .quiz-close-btn { position: absolute; top: 24px; right: 24px; background: transparent; border: none; color: rgba(255,255,255,0.3); font-size: 24px; cursor: pointer; transition: 0.3s; z-index: 10; }
+    .quiz-close-btn:hover { color: #fff; transform: rotate(90deg); }
+    
+    .quiz-progress-track { position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: rgba(255,255,255,0.05); }
+    .quiz-progress { height: 100%; background: linear-gradient(90deg, #64B5F6, #BA68C8); transition: width 0.4s ease; box-shadow: 0 0 10px rgba(186, 104, 200, 0.5); width: 0%;}
+    
+    .quiz-step-text { font-size: 11px; letter-spacing: 4px; color: #BA68C8; margin-bottom: 16px; animation: fadeIn 0.4s; }
+    .quiz-question { font-size: 28px; font-weight: 300; margin-bottom: 32px; color: #fff; line-height: 1.3; animation: fadeIn 0.4s; }
+    .quiz-options { display: grid; grid-template-columns: 1fr; gap: 12px; animation: fadeIn 0.5s; }
+    .quiz-btn { padding: 20px 24px; border-radius: 16px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.8); font-size: 15px; font-weight: 300; cursor: pointer; transition: 0.3s; text-align: left; display: flex; align-items: center; justify-content: space-between;}
+    .quiz-btn:hover { background: rgba(186, 104, 200, 0.1); border-color: rgba(186, 104, 200, 0.4); transform: translateX(5px); color: #fff; }
+    
+    /* Prescription Card */
+    .prescription-card { text-align: center; animation: fadeIn 0.6s; }
+    .rx-badge { display: inline-block; font-size: 11px; letter-spacing: 4px; color: #FFB300; background: rgba(255, 179, 0, 0.1); padding: 6px 12px; border-radius: 20px; margin-bottom: 16px; }
+    .rx-title { font-size: 36px; font-weight: 300; color: #fff; margin-bottom: 8px; }
+    .rx-app { font-size: 14px; color: #64B5F6; letter-spacing: 2px; margin-bottom: 24px; font-weight: 400; }
+    .rx-detail { font-size: 13px; color: #BA68C8; letter-spacing: 2px; margin-bottom: 32px; }
+    .rx-desc { font-size: 15px; color: rgba(255,255,255,0.5); font-weight: 300; margin-bottom: 32px; line-height: 1.6; padding: 0 20px;}
+    
+    .rx-actions { display: flex; justify-content: center; gap: 16px; }
+    .rx-btn-primary { padding: 16px 32px; border-radius: 16px; background: rgba(186, 104, 200, 0.15); border: 1px solid rgba(186, 104, 200, 0.6); color: #fff; font-size: 13px; letter-spacing: 2px; cursor: pointer; transition: 0.4s; text-decoration: none;}
+    .rx-btn-primary:hover { background: rgba(186, 104, 200, 0.3); transform: translateY(-2px); }
+
+    /* ── LEADERBOARD ── */
+    .leaderboard-wrapper { max-width: 600px; margin: 0 auto; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 32px; backdrop-filter: blur(10px); }
     .lb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .lb-title { font-size: 16px; font-weight: 300; color: #fff; letter-spacing: 2px; }
-    .lb-live-badge { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #4CAF50; letter-spacing: 2px; background: rgba(76, 175, 80, 0.1); padding: 4px 10px; border-radius: 12px; transition: all 0.3s; }
+    .lb-live-badge { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #4CAF50; letter-spacing: 2px; background: rgba(76, 175, 80, 0.1); padding: 4px 10px; border-radius: 12px; transition: 0.3s; }
     .lb-live-badge.offline { color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
     .lb-live-dot { width: 6px; height: 6px; background: #4CAF50; border-radius: 50%; animation: pulse 2s infinite; }
-    .lb-live-badge.offline .lb-live-dot { background: rgba(255,255,255,0.3); animation: none; }
-
     .lb-tabs { display: flex; gap: 24px; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
     .lb-tab { font-size: 11px; letter-spacing: 2px; color: rgba(255,255,255,0.3); cursor: pointer; transition: 0.3s; padding-bottom: 4px; position: relative; }
     .lb-tab:hover { color: rgba(255,255,255,0.8); }
     .lb-tab.active { color: #BA68C8; font-weight: 500; }
-    .lb-tab.active::after { content: ''; position: absolute; bottom: -13px; left: 0; width: 100%; height: 2px; background: #BA68C8; box-shadow: 0 0 10px rgba(186, 104, 200, 0.5); }
-
-    .lb-row { display: flex; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.02); animation: fadeIn 0.4s ease forwards; }
+    .lb-tab.active::after { content: ''; position: absolute; bottom: -13px; left: 0; width: 100%; height: 2px; background: #BA68C8; }
+    .lb-row { display: flex; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
     .lb-row:last-child { border-bottom: none; padding-bottom: 0; }
     .lb-rank { font-size: 14px; color: #BA68C8; font-weight: 500; width: 40px; }
     .lb-user { font-size: 15px; color: rgba(255,255,255,0.8); font-weight: 300; flex: 1; }
     .lb-score { font-size: 14px; color: #64B5F6; font-weight: 300; }
-    .lb-loading { text-align: center; color: rgba(255,255,255,0.5); padding: 40px 0; font-size: 14px; letter-spacing: 1px; font-weight: 300; }
 
-    /* ── DOWNLOAD MODAL ── */
-    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 2, 8, 0.7); backdrop-filter: blur(25px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
-    .modal-overlay.active { opacity: 1; pointer-events: all; }
-    @keyframes borderGlow { 0% { border-color: rgba(186, 104, 200, 0.2); } 50% { border-color: rgba(255, 179, 0, 0.4); } 100% { border-color: rgba(186, 104, 200, 0.2); } }
-    .modal-content { background: linear-gradient(145deg, rgba(20, 20, 25, 0.8), rgba(5, 5, 10, 0.9)); border: 1px solid rgba(186, 104, 200, 0.2); padding: 56px 48px; border-radius: 32px; text-align: center; max-width: 420px; transform: scale(0.95) translateY(20px); transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); box-shadow: 0 30px 60px rgba(0,0,0,0.8); animation: borderGlow 4s infinite ease-in-out; }
-    .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
-    .modal-icon { font-size: 48px; margin-bottom: 24px; filter: drop-shadow(0 0 15px rgba(255, 179, 0, 0.4)); }
-    .modal-title { font-size: 26px; font-weight: 300; color: #fff; margin-bottom: 12px; }
-    .modal-subtitle { font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 36px; line-height: 1.6; }
-    .progress-container { width: 100%; height: 4px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
-    .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #BA68C8, #FFB300); box-shadow: 0 0 15px rgba(255, 179, 0, 0.5); transition: width 3s cubic-bezier(0.4, 0, 0.2, 1); }
-    .modal-timer { font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 3px; }
-
-    /* ── TECH STACK & FOOTER ── */
-    .stack-grid { display: flex; flex-wrap: wrap; gap: 16px; max-width: 700px; }
-    .stack-item { padding: 12px 26px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); font-size: 14px; letter-spacing: 1px; font-weight: 300; color: rgba(255,255,255,0.5); transition: all 0.4s ease; cursor: default; }
-    .stack-item:hover { color: #fff; border-color: rgba(186, 104, 200, 0.4); background: rgba(186, 104, 200, 0.1); transform: translateY(-4px) scale(1.05); }
     .divider { height: 1px; background: rgba(255,255,255,0.05); margin: 0 48px; }
     footer { padding: 60px 48px; display: flex; justify-content: space-between; font-size: 13px; letter-spacing: 3px; color: rgba(255,255,255,0.2); }
 
-    /* ── RESPONSIVE ── */
-    @media (max-width: 1024px) {
-      .app-showcase-wrapper { flex-direction: column; }
-      .reviews-column { width: 100%; flex-direction: row; flex-wrap: wrap; justify-content: center; }
-      .review-bubble { width: 100%; max-width: 320px; }
-    }
-    @media (max-width: 768px) {
-      nav { padding: 24px; flex-direction: column; gap: 20px; }
-      .hero { padding: 100px 24px 60px; }
-      .section { padding: 60px 24px; }
-      .app-card { flex-direction: column; align-items: flex-start; gap: 32px; padding: 32px;}
-      .action-buttons { flex-direction: column; align-items: stretch; width: 100%; }
-      .download-btn, .preview-btn { justify-content: center; }
-      .feature-grid { grid-template-columns: 1fr; }
-      .divider { margin: 0 24px; }
-      footer { padding: 40px 24px; flex-direction: column; gap: 16px; text-align: center; }
-    }
+    @media (max-width: 1024px) { .app-showcase-wrapper { flex-direction: column; } .reviews-column { flex-direction: row; flex-wrap: wrap; justify-content: center; } }
+    @media (max-width: 768px) { nav { flex-direction: column; gap: 20px; } .hero, .section { padding: 60px 24px; } .app-card, .quiz-wrapper { padding: 32px;} .divider { margin: 0 24px; } footer { flex-direction: column; gap: 16px; text-align: center; } }
   </style>
 </head>
 <body>
 
   <canvas id="bg-canvas"></canvas>
 
-  <div id="download-modal" class="modal-overlay">
-    <div class="modal-content">
-      <div class="modal-icon">✨</div>
-      <h3 class="modal-title">Take a deep breath.</h3>
-      <p class="modal-subtitle">Prepare for a cleaner mind and better focus. Your download will begin shortly.</p>
-      <div class="progress-container"><div id="modal-progress-bar" class="progress-bar"></div></div>
-      <p class="modal-timer">STARTING IN <span id="countdown">3</span>...</p>
+  <div id="quiz-modal" class="quiz-modal-overlay">
+    <div class="quiz-wrapper">
+      <button class="quiz-close-btn" onclick="closeQuiz()">✕</button>
+      <div class="quiz-progress-track"><div id="quiz-progress" class="quiz-progress"></div></div>
+      <div id="quiz-content">
+        </div>
     </div>
   </div>
 
@@ -178,357 +142,281 @@
     <nav>
       <div class="nav-logo">DRAZOLCODES</div>
       <div class="nav-links">
+        <a onclick="openQuiz()">Assessment</a>
         <a href="#apps">Apps</a>
         <a href="#leaderboard">Community</a>
-        <a href="https://github.com/drazolcodes" target="_blank">GitHub</a>
       </div>
     </nav>
 
     <section class="hero reveal">
       <div class="hero-tag" id="dynamic-greeting">Welcome</div>
       <h1>Building apps<br>people <span>actually use.</span></h1>
-      <p>I design and develop mobile applications focused on health, mindfulness, and everyday utility. Based in India, building for the world.</p>
+      <p>I design and develop mobile applications focused on health, mindfulness, and everyday utility. Find the perfect app for your current state.</p>
+      
+      <button class="assessment-trigger-btn" onclick="openQuiz()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        TAKE THE MIND & BODY ASSESSMENT
+      </button>
     </section>
 
     <div class="divider reveal"></div>
 
     <section class="section reveal" id="apps">
-      <div class="section-label">LATEST RELEASE</div>
-      
+      <div class="section-label" style="text-align: center; margin-bottom: 60px;">LATEST RELEASE</div>
       <div class="app-showcase-wrapper">
         <div class="app-card" id="auric-card">
           <div class="app-icon"></div>
           <div class="app-info">
             <div class="app-name">AURIC <span class="app-status"><span class="status-dot"></span> LIVE</span></div>
-            <div class="app-desc">A minimalist approach to mindfulness. Reclaim your focus in a world of noise with clean, science-backed breathing cycles.</div>
-
+            <div class="app-desc">A minimalist approach to mindfulness. Reclaim your focus in a world of noise with clean, science-backed breathing cycles. Native 120fps fluid haptics.</div>
             <div class="feature-grid">
-              <div class="feature-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 6 Science-Backed Exercises</div>
-              <div class="feature-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Custom Pro Controls</div>
-              <div class="feature-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Seamless & Aesthetic UI</div>
-              <div class="feature-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Offline Mode Ready</div>
+              <div class="feature-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 6 Science-Backed Exercises</div>
+              <div class="feature-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Custom Pro Controls</div>
+              <div class="feature-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Native Flutter Performance</div>
+              <div class="feature-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Offline Mode Ready</div>
             </div>
-            
             <div class="action-buttons">
-              <div id="dl-btn" class="download-btn" data-url="https://github.com/drazolcodes/developer-home/releases/latest/download/app-release.apk" onclick="triggerModalDownload(this)">
-                <span>DOWNLOAD APK</span>
+              <a href="https://github.com/drazolcodes/developer-home/releases/latest/download/app-release.apk" class="download-btn">
+                <span>DOWNLOAD AURIC APK</span>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-              </div>
-              <button id="preview-btn" class="preview-btn">PREVIEW EXERCISE</button>
+              </a>
             </div>
-
-            <div id="inline-preview-wrapper" class="inline-preview-wrapper">
-              <div class="breath-circle-container">
-                <div id="preview-circle" class="breath-circle"></div>
-                <div id="preview-text" class="breath-timer-text">READY</div>
-              </div>
-            </div>
-
           </div>
         </div>
-
-        <div class="reviews-column" id="reviews-container">
-          </div>
-
+        <div class="reviews-column" id="reviews-container"></div>
       </div>
     </section>
 
     <div class="divider reveal"></div>
 
     <section class="section reveal" id="leaderboard">
-      <div class="section-label">GLOBAL LEADERBOARDS</div>
+      <div class="section-label" style="text-align: center; margin-bottom: 40px;">GLOBAL LEADERBOARDS</div>
       <div class="leaderboard-wrapper">
         <div class="lb-header">
           <div class="lb-title">Top Practitioners</div>
           <div id="lb-badge" class="lb-live-badge"><div class="lb-live-dot"></div> LIVE SYNC</div>
         </div>
-        
         <div class="lb-tabs">
           <div class="lb-tab active" onclick="switchLeaderboardTab('auric', this)">AURIC</div>
-          <div class="lb-tab" onclick="switchLeaderboardTab('focus_flow', this)">FOCUS FLOW</div>
-          <div class="lb-tab" onclick="switchLeaderboardTab('sleep_sync', this)">SLEEP SYNC</div>
+          <div class="lb-tab" onclick="switchLeaderboardTab('focus', this)">FOCUS FLOW</div>
+          <div class="lb-tab" onclick="switchLeaderboardTab('sleep', this)">SLEEP SYNC</div>
         </div>
-
-        <div id="lb-rows-container">
-          <div class="lb-loading">Connecting to servers...</div>
-        </div>
+        <div id="lb-rows-container"><div class="lb-loading">Connecting to servers...</div></div>
       </div>
     </section>
 
     <div class="divider reveal"></div>
-
-    <section class="section reveal" id="stack">
-      <div class="section-label">ENGINEERED WITH</div>
-      <div class="stack-grid">
-        <div class="stack-item">Flutter</div>
-        <div class="stack-item">Dart</div>
-        <div class="stack-item">Supabase</div>
-        <div class="stack-item">PostgreSQL</div>
-        <div class="stack-item">Android</div>
-        <div class="stack-item">GitHub Actions</div>
-      </div>
-    </section>
-
-    <div class="divider reveal"></div>
-
-    <footer class="reveal">
-      <div>© 2026 DRAZOLCODES</div>
-      <div>BUILT IN INDIA</div>
-    </footer>
+    <footer class="reveal"><div>© 2026 DRAZOLCODES</div><div>BUILT IN INDIA</div></footer>
   </div>
 
   <script>
-    /* ── 1. FAILSAFE CRITICAL UI ANIMATIONS FIRST ── */
-    const revealElements = document.querySelectorAll('.reveal');
-    const scrollObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('active'); });
-    }, { threshold: 0.15 });
-    revealElements.forEach((el) => scrollObserver.observe(el));
-
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
-    let w, h, time = 0;
-
-    function initCanvas() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
-
-    function drawCanvas() {
-      time += 0.005; 
-      ctx.clearRect(0, 0, w, h);
-      const auras = [
-        { x: w * 0.2, y: h * 0.3, baseR: w * 0.5, color: 'rgba(106, 27, 154, 0.15)', phase: 0 },   
-        { x: w * 0.8, y: h * 0.7, baseR: w * 0.45, color: 'rgba(255, 179, 0, 0.12)', phase: 2.5 }, 
-        { x: w * 0.5, y: h * 0.6, baseR: w * 0.55, color: 'rgba(21, 101, 192, 0.1)', phase: 5 }    
-      ];
-      auras.forEach(aura => {
-        const breath = Math.sin(time + aura.phase) * (w * 0.1); 
-        const radius = Math.max(10, aura.baseR + breath);
-        const driftX = Math.cos(time * 0.8 + aura.phase) * (w * 0.05);
-        const driftY = Math.sin(time * 0.8 + aura.phase) * (h * 0.05);
-        ctx.beginPath();
-        let grad = ctx.createRadialGradient(aura.x + driftX, aura.y + driftY, 0, aura.x + driftX, aura.y + driftY, radius);
-        grad.addColorStop(0, aura.color);
-        grad.addColorStop(1, 'rgba(0,0,0,0)');
-        ctx.fillStyle = grad;
-        ctx.arc(aura.x + driftX, aura.y + driftY, radius, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      requestAnimationFrame(drawCanvas);
-    }
-    window.addEventListener('resize', initCanvas);
-    initCanvas(); drawCanvas();
-
-    const appCard = document.getElementById('auric-card');
-    appCard.addEventListener('mousemove', (e) => {
-      if (window.innerWidth > 1024) {
-        const rect = appCard.getBoundingClientRect();
-        const x = e.clientX - rect.left; const y = e.clientY - rect.top;  
-        const centerX = rect.width / 2; const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -4; const rotateY = ((x - centerX) / centerX) * 4;
-        appCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-      }
-    });
-    appCard.addEventListener('mouseleave', () => { appCard.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`; });
-
-    function setDynamicGreeting() {
-      const hour = new Date().getHours();
-      let greeting = "Good evening";
-      if (hour >= 5 && hour < 12) greeting = "Good morning";
-      else if (hour >= 12 && hour < 18) greeting = "Good afternoon";
-      document.getElementById('dynamic-greeting').innerText = greeting + ". Find your focus.";
-    }
+    /* ── SCROLL ANIMATIONS & DYNAMIC GREETING ── */
+    document.querySelectorAll('.reveal').forEach(el => new IntersectionObserver(e => e.forEach(en => { if(en.isIntersecting) en.target.classList.add('active'); })).observe(el));
+    const setDynamicGreeting = () => { const h = new Date().getHours(); document.getElementById('dynamic-greeting').innerText = h<12 ? "Good morning." : h<18 ? "Good afternoon." : "Good evening."; };
     setDynamicGreeting();
 
-    /* ── RANDOMIZED FLOATING REVIEWS LOGIC ── */
+    /* ── CANVAS BACKGROUND ── */
+    const cvs = document.getElementById('bg-canvas'), ctx = cvs.getContext('2d');
+    let w = cvs.width = window.innerWidth, h = cvs.height = window.innerHeight, t = 0;
+    function draw() {
+      t += 0.005; ctx.clearRect(0,0,w,h);
+      [{x:w*0.2,y:h*0.3,r:w*0.5,c:'rgba(106,27,154,0.15)',p:0}, {x:w*0.8,y:h*0.7,r:w*0.45,c:'rgba(255,179,0,0.12)',p:2.5}, {x:w*0.5,y:h*0.6,r:w*0.55,c:'rgba(21,101,192,0.1)',p:5}].forEach(a => {
+        let b = Math.sin(t+a.p)*(w*0.1), r = Math.max(10,a.r+b);
+        ctx.beginPath(); let g = ctx.createRadialGradient(a.x,a.y,0,a.x,a.y,r);
+        g.addColorStop(0,a.c); g.addColorStop(1,'transparent'); ctx.fillStyle=g; ctx.arc(a.x,a.y,r,0,Math.PI*2); ctx.fill();
+      });
+      requestAnimationFrame(draw);
+    }
+    draw(); window.addEventListener('resize', () => { w = cvs.width = window.innerWidth; h = cvs.height = window.innerHeight; });
+
+    /* ── RANDOM REVIEWS ── */
     const allReviews = [
-      { text: "The cleanest UI I've ever used. Completely distraction-free.", user: "@mindful_dev" },
-      { text: "Helped me manage my pre-meeting anxiety perfectly.", user: "@sarah_flows" },
-      { text: "Love the custom intervals for box breathing.", user: "@hacker_abhi" },
-      { text: "Finally, a breathing app without annoying subscriptions.", user: "@zen_coder" },
-      { text: "The haptics and sounds are incredibly soothing.", user: "@night_owl" },
-      { text: "My go-to app before writing any code. Pure focus.", user: "@flutter_fan" },
-      { text: "Aesthetically pleasing and it actually works.", user: "@ui_wizard" },
-      { text: "It feels like a high-end physical product, not just an app. The animations are buttery smooth.", user: "@design_nomad" },
+      { text: "It feels like a high-end physical product, not just an app. The haptics are buttery smooth.", user: "@design_nomad" },
       { text: "The 2-1-4 quick reset is perfect for deep work. I use it between coding sprints.", user: "@sysadmin_life" },
       { text: "The 4-7-8 cycle actually knocks me out in minutes. Goodbye insomnia.", user: "@luna_rest" },
       { text: "Seeing the live sync on the leaderboard makes breathwork feel like a multiplayer game.", user: "@comp_sci_guy" },
       { text: "The haptic feedback syncs perfectly. I don't even need to look at the screen.", user: "@haptic_junkie" },
       { text: "Coherent breathing has been a game changer for my anxiety spikes. So glad I found Auric.", user: "@zen_state" },
       { text: "No ads. No forced logins. No paywalls to breathe. This is how software should be built.", user: "@open_sourcer" },
-      { text: "Built with Flutter but feels incredibly native. The dev really knew what they were doing.", user: "@dart_enthusiast" },
-      { text: "The 'Energise' cycle completely replaced my morning coffee. Pure oxygen high.", user: "@biohacker_x" },
-      { text: "I never thought I'd leave a review for a breathing app, but Auric is a masterpiece.", user: "@creative_coder" },
-      { text: "Love that it is offline-ready. I use the box-breathing cycle on airplanes all the time.", user: "@frequent_flyer" },
-      { text: "The custom interval controls let me match my exact lung capacity. 10/10.", user: "@prana_yogi" }
+      { text: "Built with Flutter but feels incredibly native. The dev really knew what they were doing.", user: "@dart_enthusiast" }
+    ];
+    document.getElementById('reviews-container').innerHTML = allReviews.sort(()=>0.5-Math.random()).slice(0,2).map((r,i) => `<div class="review-bubble reveal" style="animation-delay:-${i*2}s; ${i===0?'margin-left:20px':'margin-right:20px'}"><div class="review-stars">★★★★★</div><div class="review-text">"${r.text}"</div><div class="review-user">${r.user}</div></div>`).join('');
+
+    /* ── 5-STEP QUIZ LOGIC ── */
+    const modal = document.getElementById('quiz-modal');
+    const qContent = document.getElementById('quiz-content');
+    const qProg = document.getElementById('quiz-progress');
+    
+    let currentStep = 0;
+    let userAnswers = { coreProblem: '', tension: '', time: '', experience: '', goal: '' };
+
+    function openQuiz() {
+      currentStep = 0;
+      userAnswers = { coreProblem: '', tension: '', time: '', experience: '', goal: '' };
+      modal.classList.add('active');
+      renderQuizStep();
+    }
+
+    function closeQuiz() {
+      modal.classList.remove('active');
+    }
+
+    const quizData = [
+      { // Step 0
+        q: "What is your primary goal right now?",
+        options: [
+          { text: "Calm anxiety & relieve stress", val: "anxiety" },
+          { text: "Improve deep focus & productivity", val: "focus" },
+          { text: "Fix my sleep schedule & rest", val: "sleep" }
+        ]
+      },
+      { // Step 1
+        q: "How would you describe your current state?",
+        options: [
+          { text: "Overwhelmed and racing thoughts", val: "racing" },
+          { text: "Foggy, distracted, and scattered", val: "foggy" },
+          { text: "Exhausted but physically wired", val: "wired" }
+        ]
+      },
+      { // Step 2
+        q: "Where do you hold the most tension?",
+        options: [
+          { text: "Tightness in the chest and shallow breath", val: "chest" },
+          { text: "Headaches, jaw clenching, or eye strain", val: "head" },
+          { text: "Restless body and fidgeting", val: "body" }
+        ]
+      },
+      { // Step 3
+        q: "How much time do you have to reset?",
+        options: [
+          { text: "I need a fast reset (Under 60 seconds)", val: "fast" },
+          { text: "I have a few minutes to spare", val: "mid" },
+          { text: "I am ready for a longer dedicated session", val: "long" }
+        ]
+      },
+      { // Step 4
+        q: "What is your experience with breathwork?",
+        options: [
+          { text: "I'm completely new to this", val: "new" },
+          { text: "I know the basics, but need guidance", val: "some" },
+          { text: "I practice regularly and want control", val: "pro" }
+        ]
+      }
     ];
 
-    function renderRandomReviews() {
-      const container = document.getElementById('reviews-container');
-      if(!container) return;
+    function renderQuizStep() {
+      if (currentStep >= quizData.length) {
+        calculateResult();
+        return;
+      }
+
+      const stepData = quizData[currentStep];
+      const progressPercent = ((currentStep) / quizData.length) * 100;
+      qProg.style.width = `${progressPercent}%`;
+
+      let html = `<div class="quiz-step-text">QUESTION 0${currentStep + 1} OF 05</div>`;
+      html += `<div class="quiz-question">${stepData.q}</div>`;
+      html += `<div class="quiz-options">`;
       
-      // Shuffle array and pick top 3
-      const shuffled = allReviews.sort(() => 0.5 - Math.random());
-      const selected = shuffled.slice(0, 3);
+      stepData.options.forEach(opt => {
+        html += `<button class="quiz-btn" onclick="handleAnswer('${opt.val}')">
+                  ${opt.text} <span style="color: rgba(255,255,255,0.2);">→</span>
+                 </button>`;
+      });
+      html += `</div>`;
       
-      container.innerHTML = selected.map((rev, i) => {
-        // Create variations in margin and delay so they float independently
-        const margins = ['margin-left: 20px', 'margin-right: 40px', 'margin-left: 40px'];
-        const delay = -(i * 2); 
-        return `
-          <div class="review-bubble reveal" style="${margins[i]}; animation-delay: ${delay}s">
-            <div class="review-stars">★★★★★</div>
-            <div class="review-text">"${rev.text}"</div>
-            <div class="review-user">${rev.user}</div>
+      qContent.innerHTML = html;
+    }
+
+    function handleAnswer(val) {
+      if (currentStep === 0) userAnswers.coreProblem = val;
+      if (currentStep === 1) userAnswers.tension = val;
+      if (currentStep === 2) userAnswers.time = val;
+      if (currentStep === 3) userAnswers.experience = val;
+      if (currentStep === 4) userAnswers.goal = val;
+      
+      currentStep++;
+      renderQuizStep();
+    }
+
+    function calculateResult() {
+      qProg.style.width = `100%`;
+      
+      // Routing Logic
+      let appName, exerciseTitle, detail, desc, actionBtn;
+
+      if (userAnswers.coreProblem === 'focus') {
+        appName = "FOCUS FLOW APP";
+        exerciseTitle = "Deep Work Protocol";
+        detail = "App In Development";
+        desc = "Your answers indicate a need for sustained attention. Focus Flow is currently in closed testing to help developers and creatives achieve flow state.";
+        actionBtn = `<button class="rx-btn-primary" onclick="closeQuiz()">JOIN THE WAITLIST</button>`;
+      } 
+      else if (userAnswers.coreProblem === 'sleep') {
+        appName = "SLEEP SYNC APP";
+        exerciseTitle = "Circadian Reset";
+        detail = "App In Development";
+        desc = "You are struggling to transition from 'wired' to 'tired'. Sleep Sync will feature specialized long-form sessions to drop your core temperature and induce sleep.";
+        actionBtn = `<button class="rx-btn-primary" onclick="closeQuiz()">JOIN THE WAITLIST</button>`;
+      } 
+      else {
+        // They need Auric. Let's prescribe the exact exercise.
+        appName = "AURIC APP";
+        actionBtn = `<a href="#apps" class="rx-btn-primary" onclick="closeQuiz()">DOWNLOAD AURIC TO START</a>`;
+        
+        if (userAnswers.tension === 'racing' && userAnswers.time === 'fast') {
+          exerciseTitle = "2-1-4 Reset";
+          detail = "Inhale 2s · Hold 1s · Exhale 4s";
+          desc = "You need an immediate circuit breaker. The 2-1-4 pattern delivers a fast calm-reset in under a minute, perfect for breaking tension between tasks.";
+        } else if (userAnswers.tension === 'racing') {
+          exerciseTitle = "5-5-5 Breathing";
+          detail = "Inhale 5s · Hold 5s · Exhale 5s";
+          desc = "You are dealing with acute mental overwhelm. This pattern rapidly lowers cortisol levels and interrupts anxious thought spirals.";
+        } else if (userAnswers.coreProblem === 'anxiety' && userAnswers.time === 'long') {
+          exerciseTitle = "4-7-8 Breathing";
+          detail = "Inhale 4s · Hold 7s · Exhale 8s";
+          desc = "Because you have the time for a dedicated session, the 4-7-8 method will deeply activate your parasympathetic nervous system and melt away physical tension.";
+        } else {
+          exerciseTitle = "Coherent Breathing";
+          detail = "Inhale 5s · Hold 0s · Exhale 5s";
+          desc = "Your body needs steady balance. Coherent breathing achieves heart-rate coherence, proven to reduce chronic chest tension and lower blood pressure.";
+        }
+      }
+
+      qContent.innerHTML = `
+        <div class="prescription-card">
+          <div class="rx-badge">YOUR PRESCRIPTION</div>
+          <div class="rx-app">${appName}</div>
+          <div class="rx-title">${exerciseTitle}</div>
+          <div class="rx-detail">${detail}</div>
+          <div class="rx-desc">${desc}</div>
+          <div class="rx-actions">
+            ${actionBtn}
           </div>
-        `;
-      }).join('');
-      
-      // Manually trigger observer for the newly added bubbles
-      setTimeout(() => {
-        document.querySelectorAll('.review-bubble.reveal').forEach(el => scrollObserver.observe(el));
-      }, 100);
-    }
-    renderRandomReviews();
-
-
-    const previewBtn = document.getElementById('preview-btn');
-    const inlinePreviewWrapper = document.getElementById('inline-preview-wrapper');
-    const previewCircle = document.getElementById('preview-circle');
-    const previewText = document.getElementById('preview-text');
-
-    previewBtn.addEventListener('click', () => {
-      inlinePreviewWrapper.classList.add('active');
-      previewBtn.style.display = 'none';
-      let cyclesCompleted = 0; const totalCycles = 3;
-      function runCycle() {
-        if (cyclesCompleted >= totalCycles) {
-          previewText.innerText = "COMPLETE";
-          previewCircle.style.borderColor = "#FFB300"; 
-          previewCircle.style.boxShadow = "0 0 40px rgba(255, 179, 0, 0.3)";
-          return;
-        }
-        previewText.innerText = "INHALE"; previewCircle.classList.add('inhale');
-        setTimeout(() => {
-          previewText.innerText = "EXHALE"; previewCircle.classList.remove('inhale');
-          setTimeout(() => { cyclesCompleted++; runCycle(); }, 5000);
-        }, 5000);
-      }
-      runCycle();
-    });
-
-    function triggerModalDownload(btnElement) {
-      const url = btnElement.getAttribute('data-url');
-      const modal = document.getElementById('download-modal');
-      const progressBar = document.getElementById('modal-progress-bar');
-      const countdownText = document.getElementById('countdown');
-      const timerLabel = document.querySelector('.modal-timer');
-      
-      progressBar.style.transition = 'none'; progressBar.style.width = '0%';
-      timerLabel.innerHTML = 'STARTING IN <span id="countdown">3</span>...';
-      const newCountdownText = document.getElementById('countdown');
-      
-      modal.classList.add('active'); void progressBar.offsetWidth; 
-      progressBar.style.transition = 'width 3s cubic-bezier(0.4, 0, 0.2, 1)'; progressBar.style.width = '100%';
-
-      let timeLeft = 3;
-      const timer = setInterval(() => {
-        timeLeft--;
-        if (timeLeft > 0) { newCountdownText.innerText = timeLeft; } 
-        else {
-          clearInterval(timer); timerLabel.innerText = "DOWNLOADING...";
-          const hiddenA = document.createElement('a'); hiddenA.href = url; hiddenA.download = "Auric.apk";
-          document.body.appendChild(hiddenA); hiddenA.click(); document.body.removeChild(hiddenA);
-          setTimeout(() => { modal.classList.remove('active'); }, 1500);
-        }
-      }, 1000);
+          <div style="margin-top: 24px; cursor: pointer; color: rgba(255,255,255,0.3); font-size: 11px; letter-spacing: 2px;" onclick="openQuiz()">↺ RETAKE ASSESSMENT</div>
+        </div>
+      `;
     }
 
-    /* ── 2. TABBED SUPABASE LEADERBOARD LOGIC ── */
-    function switchLeaderboardTab(appName, element) {
-      document.querySelectorAll('.lb-tab').forEach(tab => tab.classList.remove('active'));
-      element.classList.add('active');
-      loadLiveLeaderboard(appName);
-    }
-
-    async function loadLiveLeaderboard(appName = 'auric') {
-      const container = document.getElementById('lb-rows-container');
-      const badge = document.getElementById('lb-badge');
-      
-      container.innerHTML = '<div class="lb-loading">Connecting...</div>';
-
-      if (appName === 'focus_flow') {
-        badge.classList.add('offline');
-        badge.innerHTML = 'IN DEVELOPMENT';
-        setTimeout(() => {
-          container.innerHTML = `
-            <div class="lb-loading" style="padding-top: 20px;">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 12px; color: rgba(255,255,255,0.3);"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><br>
-              Focus Flow is currently in closed testing.<br>Leaderboards will open upon release.
-            </div>`;
-        }, 300);
-        return;
+    /* ── SUPABASE LEADERBOARD ── */
+    const supabase = window.supabase.createClient('https://unzjjmesuyrlgauyjvai.supabase.co', 'sb_publishable_Q695Fwg_vWyjxVs5H4i9Qg_dV8bbZiO');
+    async function loadLiveLeaderboard(app) {
+      const c = document.getElementById('lb-rows-container'), b = document.getElementById('lb-badge');
+      if(app !== 'auric') { 
+        b.classList.add('offline'); b.innerHTML='IN DEVELOPMENT'; 
+        c.innerHTML='<div class="lb-loading">Leaderboards will open upon app release.</div>'; 
+        return; 
       }
-      
-      if (appName === 'sleep_sync') {
-        badge.classList.add('offline');
-        badge.innerHTML = 'RESEARCH PHASE';
-        setTimeout(() => {
-          container.innerHTML = `
-            <div class="lb-loading" style="padding-top: 20px;">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 12px; color: rgba(255,255,255,0.3);"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg><br>
-              Sleep Sync is currently in development.<br>Leaderboards will open upon release.
-            </div>`;
-        }, 300);
-        return;
-      }
-
-      badge.classList.remove('offline');
-      badge.innerHTML = '<div class="lb-live-dot"></div> LIVE SYNC';
-
+      b.classList.remove('offline'); b.innerHTML='<div class="lb-live-dot"></div> LIVE SYNC';
       try {
-        if (!window.supabase) throw new Error("Supabase library not loaded.");
-
-        const supabaseUrl = 'https://unzjjmesuyrlgauyjvai.supabase.co';
-        const supabaseKey = 'sb_publishable_Q695Fwg_vWyjxVs5H4i9Qg_dV8bbZiO';
-        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-
-        const { data, error } = await supabaseClient
-          .from('profiles')
-          .select('username, total_minutes')
-          .order('total_minutes', { ascending: false })
-          .limit(5);
-
-        if (error) throw error;
-
-        container.innerHTML = ''; 
-
-        if (!data || data.length === 0) {
-          container.innerHTML = '<div class="lb-loading">No sessions logged yet. Be the first!</div>';
-          return;
-        }
-
-        data.forEach((user, index) => {
-          const rank = (index + 1).toString().padStart(2, '0');
-          const name = user.username || 'Breather';
-          const score = user.total_minutes || 0;
-
-          const rowHtml = `
-            <div class="lb-row">
-              <div class="lb-rank">${rank}</div>
-              <div class="lb-user">${name}</div>
-              <div class="lb-score">${score} min</div>
-            </div>
-          `;
-          container.innerHTML += rowHtml;
-        });
-
-      } catch (err) {
-        console.warn('Leaderboard safely bypassed:', err);
-        container.innerHTML = '<div class="lb-loading" style="color: rgba(255, 255, 255, 0.3);">Leaderboard currently syncing...</div>';
-      }
+        const { data, error } = await supabase.from('profiles').select('username, total_minutes').order('total_minutes', { ascending: false }).limit(5);
+        if(error || !data) throw error;
+        if(data.length === 0) { c.innerHTML='<div class="lb-loading">No sessions logged yet.</div>'; return; }
+        c.innerHTML = data.map((u,i) => `<div class="lb-row"><div class="lb-rank">0${i+1}</div><div class="lb-user">${u.username||'Breather'}</div><div class="lb-score">${u.total_minutes} min</div></div>`).join('');
+      } catch(e) { c.innerHTML='<div class="lb-loading">Syncing data...</div>'; }
     }
-    
+    window.switchLeaderboardTab = (app, el) => { document.querySelectorAll('.lb-tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); loadLiveLeaderboard(app); };
     loadLiveLeaderboard('auric');
-
   </script>
 </body>
 </html>
