@@ -12,149 +12,86 @@
   <style>
     /* ── RESET & BASE ── */
     * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
-
-    body {
-      background: #020208;
-      color: #fff;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+    body { background: #020208; color: #fff; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; overflow-x: hidden; }
 
     /* ── BACKGROUND CANVAS ── */
     #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
-
     .page { position: relative; z-index: 1; }
 
     /* ── SCROLL REVEAL ANIMATIONS ── */
-    .reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
-    }
+    .reveal { opacity: 0; transform: translateY(40px); transition: all 1s cubic-bezier(0.16, 1, 0.3, 1); }
     .reveal.active { opacity: 1; transform: translateY(0); }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
     /* ── NAV ── */
-    nav {
-      padding: 32px 48px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      backdrop-filter: blur(10px);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      border-bottom: 1px solid rgba(255,255,255,0.03);
-      animation: fadeInDown 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
+    nav { padding: 32px 48px; display: flex; align-items: center; justify-content: space-between; backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.03); animation: fadeInDown 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
     .nav-logo { font-size: 14px; letter-spacing: 6px; font-weight: 400; color: rgba(255, 179, 0, 0.9); transition: color 0.4s ease; }
     .nav-logo:hover { color: #fff; }
-    
     .nav-links { display: flex; gap: 36px; }
-    .nav-links a {
-      font-size: 14px; letter-spacing: 2px; color: rgba(255,255,255,0.4); text-decoration: none; font-weight: 400; transition: all 0.4s ease;
-    }
+    .nav-links a { font-size: 14px; letter-spacing: 2px; color: rgba(255,255,255,0.4); text-decoration: none; font-weight: 400; transition: all 0.4s ease; }
     .nav-links a:hover { color: #fff; transform: translateY(-2px); }
 
     /* ── HERO ── */
     .hero { padding: 140px 48px 100px; max-width: 1000px; }
     .hero-tag { font-size: 13px; letter-spacing: 5px; color: rgba(255,255,255,0.4); font-weight: 400; margin-bottom: 24px; text-transform: uppercase; }
-    
-    @keyframes subtleFloat {
-      0%, 100% { transform: translateY(0px); }
-      50% { transform: translateY(-8px); }
-    }
-    .hero h1 {
-      font-size: clamp(48px, 8vw, 84px); font-weight: 300; line-height: 1.1; letter-spacing: -2px; color: #fff; margin-bottom: 32px;
-      animation: subtleFloat 6s ease-in-out infinite;
-    }
-    .hero h1 span { 
-      background: linear-gradient(90deg, #64B5F6, #BA68C8);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    }
+    @keyframes subtleFloat { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-8px); } }
+    .hero h1 { font-size: clamp(48px, 8vw, 84px); font-weight: 300; line-height: 1.1; letter-spacing: -2px; color: #fff; margin-bottom: 32px; animation: subtleFloat 6s ease-in-out infinite; }
+    .hero h1 span { background: linear-gradient(90deg, #64B5F6, #BA68C8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .hero p { font-size: 20px; font-weight: 300; line-height: 1.8; color: rgba(255,255,255,0.45); max-width: 600px; }
 
     /* ── APP CARD & FEATURES ── */
     .section { padding: 100px 48px; }
     .section-label { font-size: 13px; letter-spacing: 6px; color: rgba(255,255,255,0.3); margin-bottom: 48px; }
-
-    .app-card {
-      display: flex; align-items: flex-start; gap: 40px; padding: 48px; border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 32px; background: rgba(255,255,255,0.02); backdrop-filter: blur(20px); max-width: 850px;
-      transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
-      transform-style: preserve-3d; will-change: transform;
-    }
+    .app-card { display: flex; align-items: flex-start; gap: 40px; padding: 48px; border: 1px solid rgba(255,255,255,0.08); border-radius: 32px; background: rgba(255,255,255,0.02); backdrop-filter: blur(20px); max-width: 850px; transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease; transform-style: preserve-3d; will-change: transform; }
     .app-card:hover { background: rgba(255,255,255,0.04); border-color: rgba(186, 104, 200, 0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
-
-    .app-icon {
-      width: 100px; height: 100px; border-radius: 24px; flex-shrink: 0; background-image: url('icon.png'); background-color: #111116; 
-      background-size: cover; background-position: center; box-shadow: 0 15px 35px rgba(0,0,0,0.4); transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-    }
+    .app-icon { width: 100px; height: 100px; border-radius: 24px; flex-shrink: 0; background-image: url('icon.png'); background-color: #111116; background-size: cover; background-position: center; box-shadow: 0 15px 35px rgba(0,0,0,0.4); transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1); }
     .app-card:hover .app-icon { transform: translateZ(20px) scale(1.05); }
-
     .app-info { flex: 1; transform: translateZ(10px); width: 100%; }
     .app-name { font-size: 32px; font-weight: 300; letter-spacing: 2px; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 16px; }
-    
     .app-status { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 2px; color: #BA68C8; background: rgba(186, 104, 200, 0.1); padding: 6px 12px; border-radius: 20px; }
     @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(186, 104, 200, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(186, 104, 200, 0); } 100% { box-shadow: 0 0 0 0 rgba(186, 104, 200, 0); } }
     .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #BA68C8; animation: pulse 2s infinite; }
-
     .app-desc { font-size: 17px; color: rgba(255,255,255,0.5); line-height: 1.6; font-weight: 300; margin-bottom: 24px; }
-
     .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
     .feature-item { display: flex; align-items: center; gap: 12px; font-size: 14px; color: rgba(255,255,255,0.7); font-weight: 300; }
     .feature-item svg { color: #BA68C8; flex-shrink: 0; }
 
-    /* ── ACTION BUTTONS ── */
+    /* ── ACTION BUTTONS & PREVIEW ── */
     .action-buttons { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; margin-top: 10px; }
-    
-    .download-btn {
-      display: inline-flex; align-items: center; padding: 16px 32px; border-radius: 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #fff; font-size: 14px; letter-spacing: 2px; font-weight: 500; text-decoration: none; transition: all 0.4s ease; cursor: pointer; user-select: none;
-    }
+    .download-btn { display: inline-flex; align-items: center; padding: 16px 32px; border-radius: 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: #fff; font-size: 14px; letter-spacing: 2px; font-weight: 500; text-decoration: none; transition: all 0.4s ease; cursor: pointer; user-select: none; }
     .download-btn:hover { background: rgba(186, 104, 200, 0.15); border-color: rgba(186, 104, 200, 0.6); transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 25px rgba(186, 104, 200, 0.2); }
-
-    .preview-btn {
-      display: inline-flex; align-items: center; padding: 16px 32px; border-radius: 16px; background: transparent; border: 1px solid rgba(186, 104, 200, 0.4);
-      color: #BA68C8; font-size: 14px; letter-spacing: 2px; font-weight: 500; cursor: pointer; transition: all 0.4s ease;
-    }
+    .preview-btn { display: inline-flex; align-items: center; padding: 16px 32px; border-radius: 16px; background: transparent; border: 1px solid rgba(186, 104, 200, 0.4); color: #BA68C8; font-size: 14px; letter-spacing: 2px; font-weight: 500; cursor: pointer; transition: all 0.4s ease; }
     .preview-btn:hover { background: rgba(186, 104, 200, 0.1); color: #fff; transform: translateY(-3px); }
-
-    /* ── INLINE BREATHING PREVIEW ── */
-    .inline-preview-wrapper {
-      display: none; flex-direction: column; align-items: center; width: 100%;
-      margin-top: 32px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05);
-    }
+    .inline-preview-wrapper { display: none; flex-direction: column; align-items: center; width: 100%; margin-top: 32px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.05); }
     .inline-preview-wrapper.active { display: flex; animation: fadeIn 0.5s ease forwards; }
-
     .breath-circle-container { position: relative; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
-    
-    .breath-circle {
-      width: 80px; height: 80px; border-radius: 50%; background: rgba(186, 104, 200, 0.15); border: 1px solid rgba(186, 104, 200, 0.4);
-      box-shadow: 0 0 30px rgba(186, 104, 200, 0.2); transition: all 5s ease-in-out;
-    }
+    .breath-circle { width: 80px; height: 80px; border-radius: 50%; background: rgba(186, 104, 200, 0.15); border: 1px solid rgba(186, 104, 200, 0.4); box-shadow: 0 0 30px rgba(186, 104, 200, 0.2); transition: all 5s ease-in-out; }
     .breath-circle.inhale { width: 200px; height: 200px; background: rgba(186, 104, 200, 0.3); box-shadow: 0 0 60px rgba(186, 104, 200, 0.4); }
     .breath-timer-text { position: absolute; font-size: 12px; letter-spacing: 4px; color: rgba(255,255,255,0.8); font-weight: 400; }
 
-    /* ── LIVE LEADERBOARD ── */
+    /* ── LIVE LEADERBOARD WITH TABS ── */
     .leaderboard-wrapper { max-width: 600px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 32px; backdrop-filter: blur(10px); }
-    .lb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .lb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
     .lb-title { font-size: 16px; font-weight: 300; color: #fff; letter-spacing: 2px; }
-    .lb-live-badge { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #4CAF50; letter-spacing: 2px; background: rgba(76, 175, 80, 0.1); padding: 4px 10px; border-radius: 12px; }
+    .lb-live-badge { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #4CAF50; letter-spacing: 2px; background: rgba(76, 175, 80, 0.1); padding: 4px 10px; border-radius: 12px; transition: all 0.3s; }
+    .lb-live-badge.offline { color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.05); }
     .lb-live-dot { width: 6px; height: 6px; background: #4CAF50; border-radius: 50%; animation: pulse 2s infinite; }
-    
-    .lb-row { display: flex; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
+    .lb-live-badge.offline .lb-live-dot { background: rgba(255,255,255,0.3); animation: none; }
+
+    /* App Tabs */
+    .lb-tabs { display: flex; gap: 24px; margin-bottom: 24px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
+    .lb-tab { font-size: 11px; letter-spacing: 2px; color: rgba(255,255,255,0.3); cursor: pointer; transition: 0.3s; padding-bottom: 4px; position: relative; }
+    .lb-tab:hover { color: rgba(255,255,255,0.8); }
+    .lb-tab.active { color: #BA68C8; font-weight: 500; }
+    .lb-tab.active::after { content: ''; position: absolute; bottom: -13px; left: 0; width: 100%; height: 2px; background: #BA68C8; box-shadow: 0 0 10px rgba(186, 104, 200, 0.5); }
+
+    .lb-row { display: flex; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.02); animation: fadeIn 0.4s ease forwards; }
     .lb-row:last-child { border-bottom: none; padding-bottom: 0; }
     .lb-rank { font-size: 14px; color: #BA68C8; font-weight: 500; width: 40px; }
     .lb-user { font-size: 15px; color: rgba(255,255,255,0.8); font-weight: 300; flex: 1; }
     .lb-score { font-size: 14px; color: #64B5F6; font-weight: 300; }
-    .lb-loading { text-align: center; color: rgba(255,255,255,0.5); padding: 20px 0; font-size: 14px; letter-spacing: 1px; }
+    .lb-loading { text-align: center; color: rgba(255,255,255,0.5); padding: 40px 0; font-size: 14px; letter-spacing: 1px; font-weight: 300; }
 
     /* ── DOWNLOAD MODAL ── */
     .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 2, 8, 0.7); backdrop-filter: blur(25px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
@@ -259,14 +196,21 @@
     <div class="divider reveal"></div>
 
     <section class="section reveal" id="leaderboard">
-      <div class="section-label">GLOBAL LEADERBOARD</div>
+      <div class="section-label">GLOBAL LEADERBOARDS</div>
       <div class="leaderboard-wrapper">
         <div class="lb-header">
           <div class="lb-title">Top Practitioners</div>
-          <div class="lb-live-badge"><div class="lb-live-dot"></div> LIVE SYNC</div>
+          <div id="lb-badge" class="lb-live-badge"><div class="lb-live-dot"></div> LIVE SYNC</div>
         </div>
+        
+        <div class="lb-tabs">
+          <div class="lb-tab active" onclick="switchLeaderboardTab('auric', this)">AURIC</div>
+          <div class="lb-tab" onclick="switchLeaderboardTab('focus_flow', this)">FOCUS FLOW</div>
+          <div class="lb-tab" onclick="switchLeaderboardTab('sleep_sync', this)">SLEEP SYNC</div>
+        </div>
+
         <div id="lb-rows-container">
-          <div class="lb-loading">Connecting to Auric servers...</div>
+          <div class="lb-loading">Connecting to servers...</div>
         </div>
       </div>
     </section>
@@ -295,41 +239,31 @@
 
   <script>
     /* ── 1. FAILSAFE CRITICAL UI ANIMATIONS FIRST ── */
-    // Scroll Reveals
     const revealElements = document.querySelectorAll('.reveal');
     const scrollObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add('active');
-      });
+      entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('active'); });
     }, { threshold: 0.15 });
     revealElements.forEach((el) => scrollObserver.observe(el));
 
-    // Background Canvas Aura
     const canvas = document.getElementById('bg-canvas');
     const ctx = canvas.getContext('2d');
     let w, h, time = 0;
 
-    function initCanvas() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
+    function initCanvas() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
 
     function drawCanvas() {
       time += 0.005; 
       ctx.clearRect(0, 0, w, h);
-      
       const auras = [
         { x: w * 0.2, y: h * 0.3, baseR: w * 0.5, color: 'rgba(106, 27, 154, 0.15)', phase: 0 },   
         { x: w * 0.8, y: h * 0.7, baseR: w * 0.45, color: 'rgba(255, 179, 0, 0.12)', phase: 2.5 }, 
         { x: w * 0.5, y: h * 0.6, baseR: w * 0.55, color: 'rgba(21, 101, 192, 0.1)', phase: 5 }    
       ];
-
       auras.forEach(aura => {
         const breath = Math.sin(time + aura.phase) * (w * 0.1); 
         const radius = Math.max(10, aura.baseR + breath);
         const driftX = Math.cos(time * 0.8 + aura.phase) * (w * 0.05);
         const driftY = Math.sin(time * 0.8 + aura.phase) * (h * 0.05);
-
         ctx.beginPath();
         let grad = ctx.createRadialGradient(aura.x + driftX, aura.y + driftY, 0, aura.x + driftX, aura.y + driftY, radius);
         grad.addColorStop(0, aura.color);
@@ -341,28 +275,20 @@
       requestAnimationFrame(drawCanvas);
     }
     window.addEventListener('resize', initCanvas);
-    initCanvas();
-    drawCanvas();
+    initCanvas(); drawCanvas();
 
-    // 3D Card Tilt
     const appCard = document.getElementById('auric-card');
     appCard.addEventListener('mousemove', (e) => {
       if (window.innerWidth > 768) {
         const rect = appCard.getBoundingClientRect();
-        const x = e.clientX - rect.left; 
-        const y = e.clientY - rect.top;  
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateX = ((y - centerY) / centerY) * -4; 
-        const rotateY = ((x - centerX) / centerX) * 4;
+        const x = e.clientX - rect.left; const y = e.clientY - rect.top;  
+        const centerX = rect.width / 2; const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -4; const rotateY = ((x - centerX) / centerX) * 4;
         appCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
       }
     });
-    appCard.addEventListener('mouseleave', () => {
-      appCard.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`;
-    });
+    appCard.addEventListener('mouseleave', () => { appCard.style.transform = `perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)`; });
 
-    // Dynamic Greeting
     function setDynamicGreeting() {
       const hour = new Date().getHours();
       let greeting = "Good evening";
@@ -372,7 +298,6 @@
     }
     setDynamicGreeting();
 
-    // Inline Breathing Preview
     const previewBtn = document.getElementById('preview-btn');
     const inlinePreviewWrapper = document.getElementById('inline-preview-wrapper');
     const previewCircle = document.getElementById('preview-circle');
@@ -381,10 +306,7 @@
     previewBtn.addEventListener('click', () => {
       inlinePreviewWrapper.classList.add('active');
       previewBtn.style.display = 'none';
-      
-      let cyclesCompleted = 0;
-      const totalCycles = 3;
-
+      let cyclesCompleted = 0; const totalCycles = 3;
       function runCycle() {
         if (cyclesCompleted >= totalCycles) {
           previewText.innerText = "COMPLETE";
@@ -392,25 +314,15 @@
           previewCircle.style.boxShadow = "0 0 40px rgba(255, 179, 0, 0.3)";
           return;
         }
-        
-        previewText.innerText = "INHALE";
-        previewCircle.classList.add('inhale');
-        
+        previewText.innerText = "INHALE"; previewCircle.classList.add('inhale');
         setTimeout(() => {
-          previewText.innerText = "EXHALE";
-          previewCircle.classList.remove('inhale');
-          
-          setTimeout(() => {
-            cyclesCompleted++;
-            runCycle();
-          }, 5000);
+          previewText.innerText = "EXHALE"; previewCircle.classList.remove('inhale');
+          setTimeout(() => { cyclesCompleted++; runCycle(); }, 5000);
         }, 5000);
       }
-
       runCycle();
     });
 
-    // Modal Download
     function triggerModalDownload(btnElement) {
       const url = btnElement.getAttribute('data-url');
       const modal = document.getElementById('download-modal');
@@ -418,43 +330,76 @@
       const countdownText = document.getElementById('countdown');
       const timerLabel = document.querySelector('.modal-timer');
       
-      progressBar.style.transition = 'none';
-      progressBar.style.width = '0%';
+      progressBar.style.transition = 'none'; progressBar.style.width = '0%';
       timerLabel.innerHTML = 'STARTING IN <span id="countdown">3</span>...';
       const newCountdownText = document.getElementById('countdown');
       
-      modal.classList.add('active');
-      void progressBar.offsetWidth; 
-      
-      progressBar.style.transition = 'width 3s cubic-bezier(0.4, 0, 0.2, 1)';
-      progressBar.style.width = '100%';
+      modal.classList.add('active'); void progressBar.offsetWidth; 
+      progressBar.style.transition = 'width 3s cubic-bezier(0.4, 0, 0.2, 1)'; progressBar.style.width = '100%';
 
       let timeLeft = 3;
       const timer = setInterval(() => {
         timeLeft--;
-        if (timeLeft > 0) {
-          newCountdownText.innerText = timeLeft;
-        } else {
-          clearInterval(timer);
-          timerLabel.innerText = "DOWNLOADING...";
-          
-          const hiddenA = document.createElement('a');
-          hiddenA.href = url;
-          hiddenA.download = "Auric.apk";
-          document.body.appendChild(hiddenA);
-          hiddenA.click();
-          document.body.removeChild(hiddenA);
-
+        if (timeLeft > 0) { newCountdownText.innerText = timeLeft; } 
+        else {
+          clearInterval(timer); timerLabel.innerText = "DOWNLOADING...";
+          const hiddenA = document.createElement('a'); hiddenA.href = url; hiddenA.download = "Auric.apk";
+          document.body.appendChild(hiddenA); hiddenA.click(); document.body.removeChild(hiddenA);
           setTimeout(() => { modal.classList.remove('active'); }, 1500);
         }
       }, 1000);
     }
 
-    /* ── 2. SUPABASE LOGIC WRAPPED SAFELY ── */
-    async function loadLiveLeaderboard() {
+    /* ── 2. TABBED SUPABASE LEADERBOARD LOGIC ── */
+    
+    // Switch between apps
+    function switchLeaderboardTab(appName, element) {
+      // 1. Update active tab UI
+      document.querySelectorAll('.lb-tab').forEach(tab => tab.classList.remove('active'));
+      element.classList.add('active');
+
+      // 2. Load data based on the selected app
+      loadLiveLeaderboard(appName);
+    }
+
+    async function loadLiveLeaderboard(appName = 'auric') {
       const container = document.getElementById('lb-rows-container');
+      const badge = document.getElementById('lb-badge');
+      
+      container.innerHTML = '<div class="lb-loading">Connecting...</div>';
+
+      // Mock states for unreleased apps
+      if (appName === 'focus_flow') {
+        badge.classList.add('offline');
+        badge.innerHTML = 'IN DEVELOPMENT';
+        setTimeout(() => {
+          container.innerHTML = `
+            <div class="lb-loading" style="padding-top: 20px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 12px; color: rgba(255,255,255,0.3);"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg><br>
+              Focus Flow is currently in closed testing.<br>Leaderboards will open upon release.
+            </div>`;
+        }, 300);
+        return;
+      }
+      
+      if (appName === 'sleep_sync') {
+        badge.classList.add('offline');
+        badge.innerHTML = 'RESEARCH PHASE';
+        setTimeout(() => {
+          container.innerHTML = `
+            <div class="lb-loading" style="padding-top: 20px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-bottom: 12px; color: rgba(255,255,255,0.3);"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg><br>
+              Sleep Sync is currently in development.<br>Leaderboards will open upon release.
+            </div>`;
+        }, 300);
+        return;
+      }
+
+      // If Auric, fetch live data
+      badge.classList.remove('offline');
+      badge.innerHTML = '<div class="lb-live-dot"></div> LIVE SYNC';
+
       try {
-        // If the CDN failed to load (e.g. adblocker), this safely catches the error
         if (!window.supabase) throw new Error("Supabase library not loaded.");
 
         const supabaseUrl = 'https://unzjjmesuyrlgauyjvai.supabase.co';
@@ -497,8 +442,8 @@
       }
     }
     
-    // Attempt to load the leaderboard
-    loadLiveLeaderboard();
+    // Init default leaderboard (Auric)
+    loadLiveLeaderboard('auric');
 
   </script>
 </body>
