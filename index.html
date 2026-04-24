@@ -18,16 +18,8 @@
       overflow-x: hidden;
     }
 
-    /* ── THE BREATHING CANVAS ── */
-    #bg-canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      /* Removed blur here, handling it directly in canvas for better performance */
-    }
+    /* ── BACKGROUND CANVAS ── */
+    #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
 
     .page { position: relative; z-index: 1; }
 
@@ -37,10 +29,7 @@
       transform: translateY(40px);
       transition: all 1s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .reveal.active { opacity: 1; transform: translateY(0); }
 
     /* ── NAV ── */
     nav {
@@ -60,314 +49,146 @@
       to { opacity: 1; transform: translateY(0); }
     }
     
-    .nav-logo {
-      font-size: 14px;
-      letter-spacing: 6px;
-      font-weight: 400;
-      color: rgba(255, 179, 0, 0.9); /* Subtle Gold */
-      transition: color 0.4s ease;
-    }
+    .nav-logo { font-size: 14px; letter-spacing: 6px; font-weight: 400; color: rgba(255, 179, 0, 0.9); transition: color 0.4s ease; }
     .nav-logo:hover { color: #fff; }
     
     .nav-links { display: flex; gap: 36px; }
     .nav-links a {
-      font-size: 14px;
-      letter-spacing: 2px;
-      color: rgba(255,255,255,0.4);
-      text-decoration: none;
-      font-weight: 400;
-      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      font-size: 14px; letter-spacing: 2px; color: rgba(255,255,255,0.4); text-decoration: none; font-weight: 400; transition: all 0.4s ease;
     }
     .nav-links a:hover { color: #fff; transform: translateY(-2px); }
 
     /* ── HERO ── */
-    .hero {
-      padding: 160px 48px 120px;
-      max-width: 1000px;
-    }
-    .hero-tag {
-      font-size: 13px;
-      letter-spacing: 5px;
-      color: rgba(255,255,255,0.3);
-      font-weight: 400;
-      margin-bottom: 24px;
-    }
+    .hero { padding: 140px 48px 100px; max-width: 1000px; }
+    .hero-tag { font-size: 13px; letter-spacing: 5px; color: rgba(255,255,255,0.4); font-weight: 400; margin-bottom: 24px; text-transform: uppercase; }
     
     @keyframes subtleFloat {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-8px); }
     }
     .hero h1 {
-      font-size: clamp(48px, 8vw, 84px);
-      font-weight: 300;
-      line-height: 1.1;
-      letter-spacing: -2px;
-      color: #fff;
-      margin-bottom: 32px;
+      font-size: clamp(48px, 8vw, 84px); font-weight: 300; line-height: 1.1; letter-spacing: -2px; color: #fff; margin-bottom: 32px;
       animation: subtleFloat 6s ease-in-out infinite;
     }
     .hero h1 span { 
       background: linear-gradient(90deg, #64B5F6, #BA68C8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .hero p {
-      font-size: 20px;
-      font-weight: 300;
-      line-height: 1.8;
-      color: rgba(255,255,255,0.45);
-      max-width: 600px;
-    }
+    .hero p { font-size: 20px; font-weight: 300; line-height: 1.8; color: rgba(255,255,255,0.45); max-width: 600px; }
 
-    /* ── APP CARD ── */
-    .section { padding: 100px 48px; }
-    .section-label {
-      font-size: 13px;
-      letter-spacing: 6px;
-      color: rgba(255,255,255,0.3);
-      margin-bottom: 48px;
+    /* ── BREATHING PREVIEW GATEKEEPER ── */
+    .preview-section {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 80px 48px; text-align: center; background: rgba(255,255,255,0.01); border-top: 1px solid rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.03);
     }
+    .preview-header { font-size: 24px; font-weight: 300; margin-bottom: 16px; color: #fff; }
+    .preview-subheader { font-size: 15px; color: rgba(255,255,255,0.4); margin-bottom: 48px; font-weight: 300; max-width: 400px; line-height: 1.6; }
+    
+    .breath-circle-container { position: relative; width: 220px; height: 220px; display: flex; align-items: center; justify-content: center; margin-bottom: 40px; }
+    
+    .breath-circle {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: rgba(186, 104, 200, 0.15); border: 1px solid rgba(186, 104, 200, 0.4);
+      box-shadow: 0 0 30px rgba(186, 104, 200, 0.2);
+      transition: all 5s ease-in-out; /* 5s inhale/exhale smooth transition */
+    }
+    .breath-circle.inhale {
+      width: 200px; height: 200px; background: rgba(186, 104, 200, 0.3); box-shadow: 0 0 60px rgba(186, 104, 200, 0.4);
+    }
+    
+    .breath-timer-text { position: absolute; font-size: 12px; letter-spacing: 4px; color: rgba(255,255,255,0.8); font-weight: 400; }
+    
+    .start-preview-btn {
+      padding: 14px 32px; border-radius: 30px; background: rgba(186, 104, 200, 0.15); border: 1px solid rgba(186, 104, 200, 0.5);
+      color: #BA68C8; font-size: 13px; letter-spacing: 2px; cursor: pointer; transition: all 0.3s ease;
+    }
+    .start-preview-btn:hover { background: rgba(186, 104, 200, 0.3); color: #fff; transform: translateY(-2px); }
+    .start-preview-btn:disabled { opacity: 0.5; pointer-events: none; }
+
+    /* ── APP CARD & FEATURES ── */
+    .section { padding: 100px 48px; }
+    .section-label { font-size: 13px; letter-spacing: 6px; color: rgba(255,255,255,0.3); margin-bottom: 48px; }
 
     .app-card {
-      display: flex;
-      align-items: flex-start;
-      gap: 40px;
-      padding: 48px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 32px;
-      background: rgba(255,255,255,0.02);
-      backdrop-filter: blur(20px);
-      max-width: 850px;
+      display: flex; align-items: flex-start; gap: 40px; padding: 48px; border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 32px; background: rgba(255,255,255,0.02); backdrop-filter: blur(20px); max-width: 850px;
       transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), background 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease;
-      transform-style: preserve-3d;
-      will-change: transform;
+      transform-style: preserve-3d; will-change: transform;
     }
-    .app-card:hover {
-      background: rgba(255,255,255,0.04);
-      border-color: rgba(186, 104, 200, 0.3);
-      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    }
+    .app-card:hover { background: rgba(255,255,255,0.04); border-color: rgba(186, 104, 200, 0.3); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
 
     .app-icon {
-      width: 100px;
-      height: 100px;
-      border-radius: 24px;
-      flex-shrink: 0;
-      background-image: url('icon.png');
-      background-color: #111116; 
-      background-size: cover;
-      background-position: center;
-      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      width: 100px; height: 100px; border-radius: 24px; flex-shrink: 0; background-image: url('icon.png'); background-color: #111116; 
+      background-size: cover; background-position: center; box-shadow: 0 15px 35px rgba(0,0,0,0.4); transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
     }
-    .app-card:hover .app-icon {
-      transform: translateZ(20px) scale(1.05);
-    }
+    .app-card:hover .app-icon { transform: translateZ(20px) scale(1.05); }
 
     .app-info { flex: 1; transform: translateZ(10px); }
-    .app-name {
-      font-size: 32px;
-      font-weight: 300;
-      letter-spacing: 2px;
-      color: #fff;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
+    .app-name { font-size: 32px; font-weight: 300; letter-spacing: 2px; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 16px; }
     
-    .app-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: #BA68C8;
-      background: rgba(186, 104, 200, 0.1);
-      padding: 6px 12px;
-      border-radius: 20px;
-      vertical-align: middle;
-    }
-    @keyframes pulse {
-      0% { box-shadow: 0 0 0 0 rgba(186, 104, 200, 0.7); }
-      70% { box-shadow: 0 0 0 6px rgba(186, 104, 200, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(186, 104, 200, 0); }
-    }
-    .status-dot {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: #BA68C8;
-      animation: pulse 2s infinite;
-    }
+    .app-status { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 2px; color: #BA68C8; background: rgba(186, 104, 200, 0.1); padding: 6px 12px; border-radius: 20px; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(186, 104, 200, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(186, 104, 200, 0); } 100% { box-shadow: 0 0 0 0 rgba(186, 104, 200, 0); } }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: #BA68C8; animation: pulse 2s infinite; }
 
-    .app-desc {
-      font-size: 17px;
-      color: rgba(255,255,255,0.5);
-      line-height: 1.6;
-      font-weight: 300;
-      margin-bottom: 24px;
-    }
+    .app-desc { font-size: 17px; color: rgba(255,255,255,0.5); line-height: 1.6; font-weight: 300; margin-bottom: 24px; }
 
-    /* ── FEATURE GRID ── */
-    .feature-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin-bottom: 32px;
-    }
-    .feature-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.7);
-      font-weight: 300;
-    }
-    .feature-item svg {
-      color: #BA68C8;
-      flex-shrink: 0;
-    }
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 32px; }
+    .feature-item { display: flex; align-items: center; gap: 12px; font-size: 14px; color: rgba(255,255,255,0.7); font-weight: 300; }
+    .feature-item svg { color: #BA68C8; flex-shrink: 0; }
 
-    /* ── DOWNLOAD BUTTON ── */
+    /* The Locked & Unlocked Download Button */
+    .download-container { position: relative; display: inline-block; }
+    .lock-message { font-size: 13px; color: rgba(255, 179, 0, 0.8); letter-spacing: 1px; font-weight: 300; display: flex; align-items: center; gap: 8px; }
+    
     .download-btn {
-      display: inline-flex;
-      align-items: center;
-      padding: 16px 32px;
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: #fff;
-      font-size: 14px;
-      letter-spacing: 2px;
-      font-weight: 500;
-      text-decoration: none;
-      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-      cursor: pointer;
-      user-select: none;
+      display: none; align-items: center; padding: 16px 32px; border-radius: 16px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #fff; font-size: 14px; letter-spacing: 2px; font-weight: 500; text-decoration: none; transition: all 0.4s ease; cursor: pointer; user-select: none;
+      opacity: 0; transform: translateY(10px);
     }
-    .download-btn:hover {
-      background: rgba(186, 104, 200, 0.15);
-      border-color: rgba(186, 104, 200, 0.6);
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 25px rgba(186, 104, 200, 0.2);
-    }
+    .download-btn.unlocked { display: inline-flex; animation: slideUpFade 0.6s ease forwards; }
+    @keyframes slideUpFade { to { opacity: 1; transform: translateY(0); } }
+    .download-btn:hover { background: rgba(186, 104, 200, 0.15); border-color: rgba(186, 104, 200, 0.6); transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 25px rgba(186, 104, 200, 0.2); }
 
-    /* ── REDESIGNED MODAL (FROSTED AURORA) ── */
-    .modal-overlay {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(2, 2, 8, 0.7);
-      backdrop-filter: blur(25px);
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.5s ease;
+    /* ── LIVE LEADERBOARD ── */
+    .leaderboard-wrapper {
+      max-width: 600px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 24px; padding: 32px; backdrop-filter: blur(10px);
     }
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
+    .lb-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .lb-title { font-size: 16px; font-weight: 300; color: #fff; letter-spacing: 2px; }
+    .lb-live-badge { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #4CAF50; letter-spacing: 2px; background: rgba(76, 175, 80, 0.1); padding: 4px 10px; border-radius: 12px; }
+    .lb-live-dot { width: 6px; height: 6px; background: #4CAF50; border-radius: 50%; animation: pulse 2s infinite; }
     
-    @keyframes borderGlow {
-      0% { border-color: rgba(186, 104, 200, 0.2); }
-      50% { border-color: rgba(255, 179, 0, 0.4); }
-      100% { border-color: rgba(186, 104, 200, 0.2); }
-    }
+    .lb-row { display: flex; align-items: center; padding: 16px 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
+    .lb-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .lb-rank { font-size: 14px; color: #BA68C8; font-weight: 500; width: 40px; }
+    .lb-user { font-size: 15px; color: rgba(255,255,255,0.8); font-weight: 300; flex: 1; }
+    .lb-score { font-size: 14px; color: #64B5F6; font-weight: 300; }
 
-    .modal-content {
-      background: linear-gradient(145deg, rgba(20, 20, 25, 0.8), rgba(5, 5, 10, 0.9));
-      border: 1px solid rgba(186, 104, 200, 0.2);
-      padding: 56px 48px;
-      border-radius: 32px;
-      text-align: center;
-      max-width: 420px;
-      transform: scale(0.95) translateY(20px);
-      transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-      box-shadow: 0 30px 60px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
-      animation: borderGlow 4s infinite ease-in-out;
-    }
-    .modal-overlay.active .modal-content {
-      transform: scale(1) translateY(0);
-    }
-    
-    .modal-icon {
-      font-size: 48px;
-      margin-bottom: 24px;
-      filter: drop-shadow(0 0 15px rgba(255, 179, 0, 0.4));
-    }
-    .modal-title {
-      font-size: 26px;
-      font-weight: 300;
-      color: #fff;
-      margin-bottom: 12px;
-    }
-    .modal-subtitle {
-      font-size: 15px;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 36px;
-      line-height: 1.6;
-    }
-    .progress-container {
-      width: 100%;
-      height: 4px;
-      background: rgba(255,255,255,0.05);
-      border-radius: 10px;
-      overflow: hidden;
-      margin-bottom: 20px;
-    }
-    .progress-bar {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, #BA68C8, #FFB300);
-      box-shadow: 0 0 15px rgba(255, 179, 0, 0.5);
-      transition: width 3s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother fill */
-    }
-    .modal-timer {
-      font-size: 12px;
-      color: rgba(255,255,255,0.4);
-      letter-spacing: 3px;
-    }
+    /* ── DOWNLOAD MODAL ── */
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(2, 2, 8, 0.7); backdrop-filter: blur(25px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    @keyframes borderGlow { 0% { border-color: rgba(186, 104, 200, 0.2); } 50% { border-color: rgba(255, 179, 0, 0.4); } 100% { border-color: rgba(186, 104, 200, 0.2); } }
+    .modal-content { background: linear-gradient(145deg, rgba(20, 20, 25, 0.8), rgba(5, 5, 10, 0.9)); border: 1px solid rgba(186, 104, 200, 0.2); padding: 56px 48px; border-radius: 32px; text-align: center; max-width: 420px; transform: scale(0.95) translateY(20px); transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1); box-shadow: 0 30px 60px rgba(0,0,0,0.8); animation: borderGlow 4s infinite ease-in-out; }
+    .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+    .modal-icon { font-size: 48px; margin-bottom: 24px; filter: drop-shadow(0 0 15px rgba(255, 179, 0, 0.4)); }
+    .modal-title { font-size: 26px; font-weight: 300; color: #fff; margin-bottom: 12px; }
+    .modal-subtitle { font-size: 15px; color: rgba(255,255,255,0.5); margin-bottom: 36px; line-height: 1.6; }
+    .progress-container { width: 100%; height: 4px; background: rgba(255,255,255,0.05); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+    .progress-bar { width: 0%; height: 100%; background: linear-gradient(90deg, #BA68C8, #FFB300); box-shadow: 0 0 15px rgba(255, 179, 0, 0.5); transition: width 3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .modal-timer { font-size: 12px; color: rgba(255,255,255,0.4); letter-spacing: 3px; }
 
-    /* ── TECH STACK ── */
+    /* ── TECH STACK & FOOTER ── */
     .stack-grid { display: flex; flex-wrap: wrap; gap: 16px; max-width: 700px; }
-    .stack-item {
-      padding: 12px 26px;
-      border-radius: 30px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: rgba(255,255,255,0.03);
-      font-size: 14px;
-      letter-spacing: 1px;
-      font-weight: 300;
-      color: rgba(255,255,255,0.5);
-      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-      cursor: default;
-    }
-    .stack-item:hover {
-      color: #fff;
-      border-color: rgba(186, 104, 200, 0.4);
-      background: rgba(186, 104, 200, 0.1);
-      transform: translateY(-4px) scale(1.05);
-    }
-
+    .stack-item { padding: 12px 26px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.03); font-size: 14px; letter-spacing: 1px; font-weight: 300; color: rgba(255,255,255,0.5); transition: all 0.4s ease; cursor: default; }
+    .stack-item:hover { color: #fff; border-color: rgba(186, 104, 200, 0.4); background: rgba(186, 104, 200, 0.1); transform: translateY(-4px) scale(1.05); }
     .divider { height: 1px; background: rgba(255,255,255,0.05); margin: 0 48px; }
-
-    footer {
-      padding: 60px 48px;
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
-      letter-spacing: 3px;
-      color: rgba(255,255,255,0.2);
-    }
+    footer { padding: 60px 48px; display: flex; justify-content: space-between; font-size: 13px; letter-spacing: 3px; color: rgba(255,255,255,0.2); }
 
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
-      nav { padding: 24px; }
-      .hero { padding: 120px 24px 80px; }
-      .section { padding: 80px 24px; }
+      nav { padding: 24px; flex-direction: column; gap: 20px; }
+      .hero { padding: 100px 24px 60px; }
+      .preview-section, .section { padding: 60px 24px; }
       .app-card { flex-direction: column; align-items: flex-start; gap: 32px; padding: 32px;}
       .feature-grid { grid-template-columns: 1fr; }
       .divider { margin: 0 24px; }
@@ -384,9 +205,7 @@
       <div class="modal-icon">✨</div>
       <h3 class="modal-title">Take a deep breath.</h3>
       <p class="modal-subtitle">Prepare for a cleaner mind and better focus. Your download will begin shortly.</p>
-      <div class="progress-container">
-        <div id="modal-progress-bar" class="progress-bar"></div>
-      </div>
+      <div class="progress-container"><div id="modal-progress-bar" class="progress-bar"></div></div>
       <p class="modal-timer">STARTING IN <span id="countdown">3</span>...</p>
     </div>
   </div>
@@ -395,16 +214,29 @@
     <nav>
       <div class="nav-logo">DRAZOLCODES</div>
       <div class="nav-links">
+        <a href="#preview">Preview</a>
         <a href="#apps">Apps</a>
-        <a href="#stack">Stack</a>
+        <a href="#leaderboard">Community</a>
         <a href="https://github.com/drazolcodes" target="_blank">GitHub</a>
       </div>
     </nav>
 
     <section class="hero reveal">
-      <div class="hero-tag">INDEPENDENT DEVELOPER</div>
+      <div class="hero-tag" id="dynamic-greeting">Welcome</div>
       <h1>Building apps<br>people <span>actually use.</span></h1>
       <p>I design and develop mobile applications focused on health, mindfulness, and everyday utility. Based in India, building for the world.</p>
+    </section>
+
+    <section class="preview-section reveal" id="preview">
+      <h2 class="preview-header">Experience Clarity.</h2>
+      <p class="preview-subheader">Follow the circle. Complete a 30-second breathing session right here in your browser to unlock the Auric app download.</p>
+      
+      <div class="breath-circle-container">
+        <div id="preview-circle" class="breath-circle"></div>
+        <div id="preview-text" class="breath-timer-text">READY</div>
+      </div>
+      
+      <button id="preview-btn" class="start-preview-btn">START 30s SESSION</button>
     </section>
 
     <div class="divider reveal"></div>
@@ -414,54 +246,45 @@
       <div class="app-card" id="auric-card">
         <div class="app-icon"></div>
         <div class="app-info">
-          
-          <div class="app-name">
-            AURIC 
-            <span class="app-status">
-              <span class="status-dot"></span> LIVE
-            </span>
-          </div>
-          
-          <div class="app-desc">
-            A minimalist approach to mindfulness. Reclaim your focus in a world of noise with clean, science-backed breathing cycles.
-          </div>
+          <div class="app-name">AURIC <span class="app-status"><span class="status-dot"></span> LIVE</span></div>
+          <div class="app-desc">A minimalist approach to mindfulness. Reclaim your focus in a world of noise with clean, science-backed breathing cycles.</div>
 
           <div class="feature-grid">
-            <div class="feature-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              6 Science-Backed Exercises
-            </div>
-            <div class="feature-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              Custom Pro Controls
-            </div>
-            <div class="feature-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              Seamless & Aesthetic UI
-            </div>
-            <div class="feature-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              Global Leaderboards
-            </div>
-            <div class="feature-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              Multi-Language Support
-            </div>
-            <div class="feature-item">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-              Offline Mode Ready
-            </div>
+            <div class="feature-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> 6 Science-Backed Exercises</div>
+            <div class="feature-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Custom Pro Controls</div>
+            <div class="feature-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Seamless & Aesthetic UI</div>
+            <div class="feature-item"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Offline Mode Ready</div>
           </div>
           
-          <div 
-            class="download-btn" 
-            data-url="https://github.com/drazolcodes/developer-home/releases/latest/download/app-release.apk"
-            onclick="triggerModalDownload(this)"
-          >
-            <span>DOWNLOAD APK</span>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+          <div class="download-container">
+            <div id="lock-msg" class="lock-message">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              Complete the breathing preview above to unlock the app.
+            </div>
+            <div id="dl-btn" class="download-btn" data-url="https://github.com/drazolcodes/developer-home/releases/latest/download/app-release.apk" onclick="triggerModalDownload(this)">
+              <span>DOWNLOAD APK</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left: 8px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </div>
           </div>
+
         </div>
+      </div>
+    </section>
+
+    <div class="divider reveal"></div>
+
+    <section class="section reveal" id="leaderboard">
+      <div class="section-label">GLOBAL LEADERBOARD</div>
+      <div class="leaderboard-wrapper">
+        <div class="lb-header">
+          <div class="lb-title">Top Practitioners</div>
+          <div class="lb-live-badge"><div class="lb-live-dot"></div> LIVE SYNC</div>
+        </div>
+        <div class="lb-row"><div class="lb-rank">01</div><div class="lb-user">AuraFlow</div><div class="lb-score">4,280 min</div></div>
+        <div class="lb-row"><div class="lb-rank">02</div><div class="lb-user">ZenMaster_X</div><div class="lb-score">3,915 min</div></div>
+        <div class="lb-row"><div class="lb-rank">03</div><div class="lb-user">BreathworkDev</div><div class="lb-score">3,450 min</div></div>
+        <div class="lb-row"><div class="lb-rank">04</div><div class="lb-user">MindfulPath</div><div class="lb-score">2,890 min</div></div>
+        <div class="lb-row"><div class="lb-rank">05</div><div class="lb-user">hacker_abhi</div><div class="lb-score">2,105 min</div></div>
       </div>
     </section>
 
@@ -476,7 +299,6 @@
         <div class="stack-item">PostgreSQL</div>
         <div class="stack-item">Android</div>
         <div class="stack-item">GitHub Actions</div>
-        <div class="stack-item">RevenueCat</div>
       </div>
     </section>
 
@@ -489,13 +311,77 @@
   </div>
 
   <script>
+    /* ── DYNAMIC GREETING LOGIC ── */
+    function setDynamicGreeting() {
+      const hour = new Date().getHours();
+      let greeting = "Good evening";
+      if (hour >= 5 && hour < 12) greeting = "Good morning";
+      else if (hour >= 12 && hour < 18) greeting = "Good afternoon";
+      document.getElementById('dynamic-greeting').innerText = greeting + ". Find your focus.";
+    }
+    setDynamicGreeting();
+
+    /* ── 30s BREATHING PREVIEW LOGIC (UNLOCKS DOWNLOAD) ── */
+    const previewBtn = document.getElementById('preview-btn');
+    const previewCircle = document.getElementById('preview-circle');
+    const previewText = document.getElementById('preview-text');
+    const lockMsg = document.getElementById('lock-msg');
+    const dlBtn = document.getElementById('dl-btn');
+
+    previewBtn.addEventListener('click', () => {
+      previewBtn.disabled = true;
+      previewBtn.innerText = "SESSION IN PROGRESS...";
+      
+      // 30 Seconds = 3 Cycles of (5s Inhale + 5s Exhale)
+      let cyclesCompleted = 0;
+      const totalCycles = 3;
+
+      function runCycle() {
+        if (cyclesCompleted >= totalCycles) {
+          endPreview();
+          return;
+        }
+        
+        // Inhale (5s)
+        previewText.innerText = "INHALE";
+        previewCircle.classList.add('inhale');
+        
+        setTimeout(() => {
+          // Exhale (5s)
+          previewText.innerText = "EXHALE";
+          previewCircle.classList.remove('inhale');
+          
+          setTimeout(() => {
+            cyclesCompleted++;
+            runCycle();
+          }, 5000);
+        }, 5000);
+      }
+
+      runCycle();
+    });
+
+    function endPreview() {
+      previewText.innerText = "COMPLETE";
+      previewBtn.innerText = "CLARITY UNLOCKED";
+      previewCircle.style.borderColor = "#FFB300"; // Auric Gold
+      previewCircle.style.boxShadow = "0 0 40px rgba(255, 179, 0, 0.3)";
+      
+      // Unlock the Download Button in the App Card
+      lockMsg.style.display = "none";
+      dlBtn.classList.add('unlocked');
+      
+      // Auto-scroll to the app card smoothly
+      setTimeout(() => {
+        document.getElementById('apps').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 1500);
+    }
+
     /* ── SCROLL REVEAL LOGIC ── */
     const revealElements = document.querySelectorAll('.reveal');
     const scrollObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-        }
+        if (entry.isIntersecting) entry.target.classList.add('active');
       });
     }, { threshold: 0.15 });
     revealElements.forEach((el) => scrollObserver.observe(el));
@@ -524,44 +410,34 @@
     let w, h, time = 0;
 
     function init() {
-      // Create a slightly oversized canvas so auras bleed off the edges smoothly
       w = canvas.width = window.innerWidth;
       h = canvas.height = window.innerHeight;
     }
 
     function draw() {
-      time += 0.005; // Very slow time progression for a calm feel
+      time += 0.005; 
       ctx.clearRect(0, 0, w, h);
       
-      // Three massive, soft gradients representing the app's aesthetic
       const auras = [
-        { x: w * 0.2, y: h * 0.3, baseR: w * 0.5, color: 'rgba(106, 27, 154, 0.15)', phase: 0 },   // Deep Amethyst
-        { x: w * 0.8, y: h * 0.7, baseR: w * 0.45, color: 'rgba(255, 179, 0, 0.12)', phase: 2.5 }, // Auric Gold
-        { x: w * 0.5, y: h * 0.6, baseR: w * 0.55, color: 'rgba(21, 101, 192, 0.1)', phase: 5 }    // Calm Ocean Blue
+        { x: w * 0.2, y: h * 0.3, baseR: w * 0.5, color: 'rgba(106, 27, 154, 0.15)', phase: 0 },   
+        { x: w * 0.8, y: h * 0.7, baseR: w * 0.45, color: 'rgba(255, 179, 0, 0.12)', phase: 2.5 }, 
+        { x: w * 0.5, y: h * 0.6, baseR: w * 0.55, color: 'rgba(21, 101, 192, 0.1)', phase: 5 }    
       ];
 
       auras.forEach(aura => {
-        // Sine wave scaling to simulate deep, slow breathing
         const breath = Math.sin(time + aura.phase) * (w * 0.1); 
         const radius = Math.max(10, aura.baseR + breath);
-
-        // Gentle floating movement
         const driftX = Math.cos(time * 0.8 + aura.phase) * (w * 0.05);
         const driftY = Math.sin(time * 0.8 + aura.phase) * (h * 0.05);
 
         ctx.beginPath();
-        let grad = ctx.createRadialGradient(
-          aura.x + driftX, aura.y + driftY, 0, 
-          aura.x + driftX, aura.y + driftY, radius
-        );
+        let grad = ctx.createRadialGradient(aura.x + driftX, aura.y + driftY, 0, aura.x + driftX, aura.y + driftY, radius);
         grad.addColorStop(0, aura.color);
         grad.addColorStop(1, 'rgba(0,0,0,0)');
-        
         ctx.fillStyle = grad;
         ctx.arc(aura.x + driftX, aura.y + driftY, radius, 0, Math.PI * 2);
         ctx.fill();
       });
-
       requestAnimationFrame(draw);
     }
 
@@ -581,7 +457,6 @@
       modal.classList.add('active');
       void progressBar.offsetWidth; 
       
-      // 3 second cubic-bezier fill for a smoother, premium feel
       progressBar.style.transition = 'width 3s cubic-bezier(0.4, 0, 0.2, 1)';
       progressBar.style.width = '100%';
 
@@ -601,9 +476,7 @@
           hiddenA.click();
           document.body.removeChild(hiddenA);
 
-          setTimeout(() => {
-            modal.classList.remove('active');
-          }, 1500);
+          setTimeout(() => { modal.classList.remove('active'); }, 1500);
         }
       }, 1000);
     }
