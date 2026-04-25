@@ -423,8 +423,14 @@
         
         c.innerHTML = htmlOutput;
         
-      } catch(e) { 
-        c.innerHTML='<div class="lb-loading" style="color: rgba(255,255,255,0.3);">Leaderboard currently syncing...</div>'; 
+     } catch(e) { 
+        console.error("Leaderboard Crash:", e); // Prints to browser console
+        
+        // This will print the EXACT error right onto your webpage
+        c.innerHTML = `<div class="lb-loading" style="color: #FF5252; font-size: 12px; line-height: 1.5;">
+          <b>ERROR:</b> ${e.message || JSON.stringify(e)}<br>
+          <i>Check Developer Console (F12) for more details.</i>
+        </div>`; 
       }
     }
     
