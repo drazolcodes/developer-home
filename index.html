@@ -465,6 +465,20 @@
         </div>`; 
       }
     }
+
+
+    // 1. Attach click events to the leaderboard tabs
+    window.switchLeaderboardTab = (app, el) => { 
+        document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active')); 
+        el.classList.add('active'); 
+        loadLiveLeaderboard(app); 
+    };
+    
+    // 2. Trigger the initial load as soon as the page is ready
+    document.addEventListener("DOMContentLoaded", () => {
+        loadLiveLeaderboard('auric');
+    });
+    
   </script>
 </body>
 </html>
