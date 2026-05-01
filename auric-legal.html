@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auric - Legal Documentation</title>
+    <style>
+        :root {
+            --bg-color: #0A0614;
+            --surface-color: #160D2E;
+            --primary-color: #B57BFF;
+            --text-main: #FFFFFF;
+            --text-muted: rgba(255, 255, 255, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.7;
+        }
+        .navbar {
+            background-color: rgba(10, 6, 20, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+        }
+        .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            transition: color 0.2s ease;
+        }
+        .back-link:hover {
+            color: var(--primary-color);
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+        .title-section {
+            margin-bottom: 60px;
+            text-align: center;
+        }
+        .title-section h1 {
+            color: var(--primary-color);
+            font-size: 40px;
+            font-weight: 300;
+            margin: 0 0 16px 0;
+            letter-spacing: 2px;
+        }
+        .title-section p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        .nav-pills {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 60px;
+        }
+        .nav-pills a {
+            padding: 12px 24px;
+            border-radius: 30px;
+            background-color: var(--surface-color);
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 14px;
+            border: 1px solid var(--border-color);
+            transition: all 0.2s ease;
+        }
+        .nav-pills a:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+        section {
+            margin-bottom: 80px;
+        }
+        h2 {
+            font-size: 28px;
+            font-weight: 300;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+            color: #fff;
+        }
+        h3 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-top: 32px;
+            margin-bottom: 12px;
+            color: var(--primary-color);
+        }
+        p, li {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-bottom: 16px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .disclaimer-box {
+            background-color: rgba(255, 82, 82, 0.1);
+            border-left: 4px solid #FF5252;
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 24px 0;
+        }
+        .disclaimer-box p {
+            color: rgba(255, 255, 255, 0.9);
+            margin: 0;
+        }
+        .contact-email {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="index.html" class="back-link">← Back to Hub</a>
+    </nav>
+
+    <div class="container">
+        <div class="title-section">
+            <h1>AURIC</h1>
+            <p>Legal Documentation & Policies</p>
+        </div>
+
+        <div class="nav-pills">
+            <a href="#privacy">Privacy Policy</a>
+            <a href="#terms">Terms & Conditions</a>
+        </div>
+
+        <section id="privacy">
+            <h2>Privacy Policy</h2>
+            <p><em>Effective Date: May 2026</em></p>
+
+            <h3>1. Introduction</h3>
+            <p>Welcome to Auric ("we," "our," or "us"). We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use the Auric mobile application.</p>
+
+            <h3>2. Information We Collect</h3>
+            <p>To provide the best mindfulness experience, we collect the following types of information:</p>
+            <ul>
+                <li><strong>Account Information:</strong> When you create an account via email or Google Sign-In, we collect your email address and authentication tokens.</li>
+                <li><strong>Profile Data:</strong> You may choose to provide a username and upload a profile picture.</li>
+                <li><strong>App Usage & Wellness Data:</strong> We track your breathing session durations, total minutes practiced, daily streaks, preferred exercises, and self-reported mood check-ins.</li>
+                <li><strong>Device Permissions:</strong> With your explicit permission, we may access your device's Photo Gallery (strictly for uploading profile pictures) and send Local Notifications (for daily mindfulness reminders).</li>
+            </ul>
+
+            <h3>3. How We Use Your Information</h3>
+            <p>We use your data solely to operate and improve the Auric experience, specifically to:</p>
+            <ul>
+                <li>Maintain your account and sync your progress across devices.</li>
+                <li>Display your chosen username, profile picture, and total breathing minutes on the Global Leaderboard.</li>
+                <li>Calculate your daily streaks and personal bests.</li>
+                <li>Deliver scheduled local notifications to remind you to practice.</li>
+            </ul>
+
+            <h3>4. Third-Party Services</h3>
+            <p>We do not sell your personal data. We utilize trusted third-party services to run the app securely:</p>
+            <ul>
+                <li><strong>Supabase:</strong> Used for secure database hosting, user authentication, and profile image storage.</li>
+                <li><strong>Google:</strong> Used to facilitate Google Sign-In authentication.</li>
+            </ul>
+
+            <h3>5. Data Retention and Deletion</h3>
+            <p>You have full control over your data. You can delete your account entirely at any time using the "Delete Account" button in the "Danger Zone" of the app's Settings menu. Initiating this process will permanently and irreversibly erase your account credentials, session history, and leaderboard data from our servers.</p>
+        </section>
+
+        <section id="terms">
+            <h2>Terms and Conditions</h2>
+            <p><em>Effective Date: May 2026</em></p>
+
+            <h3>1. Acceptance of Terms</h3>
+            <p>By downloading, accessing, or using Auric, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you may not use the app.</p>
+
+            <div class="disclaimer-box">
+                <h3>2. Medical Disclaimer (Important)</h3>
+                <p>Auric is a mindfulness, breathing, and relaxation tool. <strong>It is not a medical device, nor is it a substitute for professional medical advice, diagnosis, or treatment.</strong> The breathing exercises are for general wellness purposes only. If you have a history of respiratory issues, cardiovascular conditions, panic disorders, or any other medical concerns, please consult a healthcare provider before practicing breathwork. If you feel dizzy, lightheaded, or physically uncomfortable at any point during a session, stop immediately.</p>
+            </div>
+
+            <h3>3. User Accounts and Conduct</h3>
+            <ul>
+                <li>You are responsible for maintaining the confidentiality of your login credentials.</li>
+                <li>The Auric Leaderboard is a public space. You agree not to use offensive, explicit, or inappropriate usernames or profile pictures. We reserve the right to ban accounts or clear profiles that violate this rule without prior notice.</li>
+            </ul>
+
+            <h3>4. Pro Features</h3>
+            <p>Certain features (such as Custom Breathing Patterns) may be restricted to premium tiers. We reserve the right to modify, add, or remove premium features and adjust pricing as the app evolves.</p>
+
+            <h3>5. Governing Law</h3>
+            <p>These terms and conditions are governed by and construed in accordance with the laws of India, and you irrevocably submit to the exclusive jurisdiction of the courts in that location.</p>
+
+            <h3>6. Changes to Terms</h3>
+            <p>We reserve the right to modify these terms at any time. We will notify users of significant changes through an in-app notice or via email.</p>
+
+            <h3>7. Contact Information</h3>
+            <p>For any questions regarding these Policies or Terms, please contact us at: <br>
+            <a href="mailto:support@yourdomain.com" class="contact-email">support@yourdomain.com</a> <em>(Replace with your actual support email)</em></p>
+        </section>
+    </div>
+
+</body>
+</html>
